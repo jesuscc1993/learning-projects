@@ -1,0 +1,90 @@
+<!-- script -->
+<script lang="ts">
+import { Product } from '../domain/products';
+import Vue from 'vue';
+
+import AppPrompt from '../components/app-prompt.component.vue';
+import { productsService } from '../services/products.service';
+import { pipe } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { productsStore } from '@/stores/products.store';
+
+type DataType = {
+  headers: { text: string; value: string; align: string; sortable: boolean }[];
+  isModalOpen: boolean;
+  productBeingUpdated?: Product;
+};
+
+export default Vue.extend({
+  components: {
+    AppPrompt,
+  },
+  data() {
+    return <DataType>{
+      headers: [
+        { text: this.$t('product.name'), value: 'name', align: 'left' },
+        { text: '', value: 'edit', align: 'right', sortable: false },
+      ],
+      isModalOpen: false,
+      productBeingUpdated: undefined,
+    };
+  },
+  created() {
+    productsService.getProducts().subscribe();
+  },
+  methods: {
+    openEditionModal(product?: Product) {
+      this.productBeingUpdated = product;
+      this.isModalOpen = true;
+    },
+    closeModal() {
+      this.isModalOpen = false;
+    },
+
+    saveProduct(product: Product) {
+      const action = this.productBeingUpdated ? productsService.updateProduct : productsService.addProduct;
+      action({ ...this.productBeingUpdated, ...product }).subscribe();
+    },
+    deleteProduct(productId: number) {
+      productsService.deleteProduct(productId).subscribe();
+    },
+  },
+  store: productsStore,
+});
+</script>
+
+<!-- template -->
+<template>
+  <div>
+    <app-prompt
+      :title="$t('product')"
+      :placeholder="$t('product.name')"
+      :model="productBeingUpdated ? this.productBeingUpdated.name : ''"
+      v-model="isModalOpen"
+      @dismiss="saveProduct(({ name: $event }))"
+    ></app-prompt>
+
+    <div class="d-block text-xs-right">
+      <v-btn icon color="primary" @click="openEditionModal()">
+        <v-icon>add</v-icon>
+      </v-btn>
+    </div>
+
+    <v-data-table :headers="headers" :items="$store.getters.products" class="elevation-1">
+      <template v-slot:items="props">
+        <td class="text-xs-left">{{ props.item.name }}</td>
+        <td class="text-xs-right">
+          <v-btn flat icon @click="openEditionModal(props.item)">
+            <v-icon>edit</v-icon>
+          </v-btn>
+          <v-btn flat icon @click="deleteProduct(props.item.id)">
+            <v-icon>delete</v-icon>
+          </v-btn>
+        </td>
+      </template>
+    </v-data-table>
+  </div>
+</template>
+
+<!-- style -->
+<style lang="scss" scoped></style>
