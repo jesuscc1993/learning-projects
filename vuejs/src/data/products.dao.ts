@@ -5,15 +5,12 @@ import { of } from 'rxjs';
 
 class ProductsDao {
   getProducts() {
-    // return of(products as Product[]);
     return collectionData(firebaseService.collection('products'), 'id');
   }
   addProduct(product: Product) {
-    // return of(product);
     return of(firebaseService.collection('products').add(product));
   }
   updateProduct(product: Product) {
-    // return of(product);
     return of(
       firebaseService
         .collection('products')
@@ -22,7 +19,6 @@ class ProductsDao {
     );
   }
   deleteProduct(productId: string) {
-    // return of(productId);
     return of(
       firebaseService
         .collection('products')
