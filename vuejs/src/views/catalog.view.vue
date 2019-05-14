@@ -68,7 +68,7 @@ export default Vue.extend({
     ></app-prompt>
 
     <div class="d-block text-xs-right">
-      <v-btn icon color="primary" @click="openEditionModal()">
+      <v-btn icon color="primary" class="mx-1 my-2" @click="openEditionModal()">
         <v-icon>add</v-icon>
       </v-btn>
     </div>
@@ -77,10 +77,10 @@ export default Vue.extend({
       <template v-slot:items="props">
         <td class="text-xs-left">{{ props.item.name }}</td>
         <td class="text-xs-right">
-          <v-btn flat icon @click="openEditionModal(props.item)">
+          <v-btn flat icon class="ma-0" @click="openEditionModal(props.item)">
             <v-icon>edit</v-icon>
           </v-btn>
-          <v-btn flat icon @click="deleteProduct(props.item.id)">
+          <v-btn flat icon class="ma-0" @click="deleteProduct(props.item.id)">
             <v-icon>delete</v-icon>
           </v-btn>
         </td>
