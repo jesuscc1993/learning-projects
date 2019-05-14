@@ -2,11 +2,21 @@
 <script>
 export default {
   props: {
-    model: String,
+    initialValue: String,
     value: Boolean,
 
     title: String,
     placeholder: String,
+  },
+  watch: {
+    initialValue(value) {
+      this.model = this.initialValue;
+    },
+  },
+  data() {
+    return {
+      model: this.initialValue,
+    };
   },
   computed: {
     isOpen: {
@@ -42,7 +52,11 @@ export default {
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary" :disabled="!model.length" @click="dismiss()">{{ $t('generic.save') }}</v-btn>
+        <v-btn
+          color="primary"
+          :disabled="!(model && model.length)"
+          @click="dismiss()"
+        >{{ $t('generic.save') }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

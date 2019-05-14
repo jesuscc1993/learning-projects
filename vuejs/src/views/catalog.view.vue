@@ -7,7 +7,7 @@ import AppPrompt from '../components/app-prompt.component.vue';
 import { productsService } from '../services/products.service';
 import { pipe } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { productsStore } from '@/stores/products.store';
+import { productsStore } from '../stores/products.store';
 
 type DataType = {
   headers: { text: string; value: string; align: string; sortable: boolean }[];
@@ -42,10 +42,13 @@ export default Vue.extend({
     },
 
     saveProduct(product: Product) {
-      const action = this.productBeingUpdated ? productsService.updateProduct : productsService.addProduct;
-      action({ ...this.productBeingUpdated, ...product }).subscribe();
+      if (this.productBeingUpdated) {
+        productsService.updateProduct({ ...this.productBeingUpdated, ...product });
+      } else {
+        productsService.addProduct(product);
+      }
     },
-    deleteProduct(productId: number) {
+    deleteProduct(productId: string) {
       productsService.deleteProduct(productId).subscribe();
     },
   },
@@ -59,7 +62,7 @@ export default Vue.extend({
     <app-prompt
       :title="$t('product')"
       :placeholder="$t('product.name')"
-      :model="productBeingUpdated ? this.productBeingUpdated.name : ''"
+      :initialValue="productBeingUpdated ? this.productBeingUpdated.name : ''"
       v-model="isModalOpen"
       @dismiss="saveProduct(({ name: $event }))"
     ></app-prompt>

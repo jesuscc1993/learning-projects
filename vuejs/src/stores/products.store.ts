@@ -20,7 +20,7 @@ export const productsStore = new Vuex.Store({
     updateProduct(state: State, updatedProduct: Product) {
       state.products = state.products.map(product => (product.id === updatedProduct.id ? updatedProduct : product));
     },
-    deleteProduct(state: State, productId: number) {
+    deleteProduct(state: State, productId: string) {
       state.products = state.products.filter(product => product.id !== productId);
     },
   },

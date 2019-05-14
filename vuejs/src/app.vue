@@ -39,4 +39,7 @@ export default {
     }
   }
 }
+.v-btn {
+  cursor: pointer;
+}
 </style>

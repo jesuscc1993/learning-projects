@@ -14,7 +14,7 @@ class ProductsService {
   updateProduct(product: Product) {
     return productsDao.updateProduct(product).pipe(tap(() => productsStore.dispatch('updateProduct', product)));
   }
-  deleteProduct(productId: number) {
+  deleteProduct(productId: string) {
     return productsDao.deleteProduct(productId).pipe(tap(() => productsStore.dispatch('deleteProduct', productId)));
   }
 }
