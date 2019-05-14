@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema } from './node_modules/mongoose';
 
 export const noiseSchema: Schema = new Schema({
   location: {

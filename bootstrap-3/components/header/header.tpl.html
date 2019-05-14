@@ -1,0 +1,22 @@
+<nav class="navbar navbar-inverse header" role="navigation" data-spy="affix" data-offset-top="190">
+    <div class="container">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#headerCollapse">
+                <span class="glyphicon glyphicon-align-justify lightgray"></span>
+            </button>
+            <a class="navbar-brand js-scroll-trigger" href="#top">{{ header.goToTopLabel }}</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="headerCollapse">
+            <ul class="nav navbar-nav">
+                <li ng-repeat="entry in header.links">
+                    <a class="js-scroll-trigger" ng-href="{{ entry.url }}">
+                        {{ entry.label }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>

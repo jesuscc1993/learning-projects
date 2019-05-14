@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- vendor -->
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto">
+        <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="node_modules/animate.css/animate.min.css">
+        <link rel="stylesheet" type="text/css" href="node_modules/font-awesome/css/font-awesome.min.css">
+        <!-- local -->
+        <link rel="stylesheet" type="text/css" href="style/landing.css">
+
+        <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
+        <title>Bootstrap 3 demo</title>
+    </head>
+
+    <body ng-app="bootstrap-3-demo" data-spy="scroll" data-offset="52" data-target=".header">
+        <div ng-controller="landingCtrl" ng-init="onLoad(this)">
+
+            <div class="landing-page">
+                <!-- header -->
+                <div id="top">
+                    <ng-include src="'templates/carousel.tpl.html'"></ng-include>
+                    <header></header>
+                </div>
+
+                <!-- content -->
+                <div class="content">
+                    <ng-include src="'templates/aboutMe.tpl.html'"></ng-include>
+                    <thumbnails-section section="works"></thumbnails-section>
+                    <thumbnails-section section="hobbies"></thumbnails-section>
+                </div>
+
+                <!-- footer -->
+                <ng-include src="'templates/footer.tpl.html'"></ng-include>
+            </div>
+
+        </div>
+
+        <!-- vendor -->
+        <script src="node_modules/jquery/dist/jquery.min.js"></script>
+        <script src="node_modules/jquery-easing/dist/jquery.easing.1.3.umd.min.js"></script>
+        <script src="node_modules/scrollreveal/dist/scrollreveal.min.js"></script>
+        <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="node_modules/angular/angular.min.js"></script>
+        <script src="vendor-custom/scrolling-nav/scrolling-nav.js"></script>
+
+        <!-- local -->
+        <script src="app.js"></script>
+        <script src="landingCtrl.js"></script>
+        <!-- services -->
+        <script src="services/dataService.js"></script>
+        <!-- components -->
+        <script src="components/header/header.js"></script>
+        <script src="components/thumbnailsSection/thumbnailsSection.js"></script>
+
+    </body>
+</html>

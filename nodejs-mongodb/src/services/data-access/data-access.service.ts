@@ -1,23 +1,18 @@
-import { Document } from 'mongoose';
-import { Observable } from 'rxjs';
-
 import { AppSettings } from '../../app.settings';
-
 import { GeoJson } from '../../models/geoJson.model';
 import { DecibelsAverage, isNoise, Noise, NoiseFilters } from '../../models/noise.model';
 import { isPlace, Place, PlaceFilters } from '../../models/place.model';
-
 import { noiseSchema, placeSchema } from './data-access.schemas';
+import * as _ from './node_modules/lodash';
+import { Document } from './node_modules/mongoose';
+import { Observable } from './node_modules/rxjs';
 
 const mongoose = require('mongoose');
 const moment = require('moment');
-import * as _ from 'lodash';
-
 let NoiseDocument: any;
 let PlaceDocument: any;
 
 export class DataAccessService {
-
   private errorMessages: any = {
     missingRequestBody: 'ERROR: Request body is missing.'
   };
@@ -27,16 +22,18 @@ export class DataAccessService {
   }
 
   public connect(connectionSettings: ConnectionSettings): Observable<any> {
-    return new Observable((observer) => {
-      mongoose.connect(`${connectionSettings.url}/${connectionSettings.databaseName}`, { useNewUrlParser: true }).then(() => {
-        observer.next();
-        observer.complete();
-
-      }, (error: Error) => {
-        observer.error(error);
-      });
+    return new Observable(observer => {
+      mongoose.connect(`${connectionSettings.url}/${connectionSettings.databaseName}`, { useNewUrlParser: true }).then(
+        () => {
+          observer.next();
+          observer.complete();
+        },
+        (error: Error) => {
+          observer.error(error);
+        }
+      );
     });
-  };
+  }
 
   private setupSchemas() {
     NoiseDocument = mongoose.model('Noise', noiseSchema);
@@ -44,23 +41,24 @@ export class DataAccessService {
   }
 
   private saveDocument(document: Document): Observable<any> {
-    return new Observable((observer) => {
-      document.save().then((response: any) => {
-        observer.next(response);
-        observer.complete();
-
-      }, (error) => {
-        observer.error(error);
-      });
+    return new Observable(observer => {
+      document.save().then(
+        (response: any) => {
+          observer.next(response);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
   private findDocuments(source: any, documentFilters: any, sortBy?: string): Observable<any> {
-    return new Observable((observer) => {
+    return new Observable(observer => {
       source.find(documentFilters, (error: Error, documents: Document[]) => {
         if (error) {
           observer.error(error);
-
         } else {
           if (sortBy) {
             documents = _.sortBy(documents, sortBy);
@@ -81,7 +79,7 @@ export class DataAccessService {
           $geometry: geoJson,
           $maxDistance: AppSettings.maximumSearchDistance
         }
-      }
+      };
     }
 
     return filter;
@@ -97,9 +95,8 @@ export class DataAccessService {
       });
 
       return this.saveDocument(noiseDocument);
-
     } else {
-      return new Observable((observer) => {
+      return new Observable(observer => {
         observer.error(this.errorMessages.missingRequestBody);
       });
     }
@@ -128,36 +125,40 @@ export class DataAccessService {
   }
 
   public getNoisesDecibelsAverage(noiseFilters: NoiseFilters): Observable<DecibelsAverage[]> {
-    return new Observable((observer) => {
+    return new Observable(observer => {
+      this.getNoises(noiseFilters).subscribe(
+        noises => {
+          const groupedDecibels: any = {};
 
-      this.getNoises(noiseFilters).subscribe((noises) => {
-        const groupedDecibels: any = {};
+          noises.forEach(noise => {
+            const dateString: string = moment
+              .utc(noise.date)
+              .startOf('hour')
+              .toString();
 
-        noises.forEach((noise) => {
-          const dateString: string = moment.utc(noise.date).startOf('hour').toString();
-
-          groupedDecibels[dateString] = groupedDecibels[dateString] || [];
-          groupedDecibels[dateString].push(noise.decibels);
-        });
-
-        const decibelsAverages: DecibelsAverage[] = [];
-
-        const dateStrings: string[] = Object.keys(groupedDecibels);
-        dateStrings.forEach((dateString) => {
-          const decibelsByDate: any = groupedDecibels[dateString];
-
-          decibelsAverages.push({
-            date: new Date(dateString),
-            decibels: _.sum(decibelsByDate) / decibelsByDate.length
+            groupedDecibels[dateString] = groupedDecibels[dateString] || [];
+            groupedDecibels[dateString].push(noise.decibels);
           });
-        });
 
-        observer.next(decibelsAverages);
-        observer.complete();
+          const decibelsAverages: DecibelsAverage[] = [];
 
-      }, (error) => {
-        observer.error(error);
-      })
+          const dateStrings: string[] = Object.keys(groupedDecibels);
+          dateStrings.forEach(dateString => {
+            const decibelsByDate: any = groupedDecibels[dateString];
+
+            decibelsAverages.push({
+              date: new Date(dateString),
+              decibels: _.sum(decibelsByDate) / decibelsByDate.length
+            });
+          });
+
+          observer.next(decibelsAverages);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
     });
   }
 
@@ -169,9 +170,8 @@ export class DataAccessService {
       });
 
       return this.saveDocument(placeDocument);
-
     } else {
-      return new Observable((observer) => {
+      return new Observable(observer => {
         observer.error(this.errorMessages.missingRequestBody);
       });
     }
@@ -188,7 +188,6 @@ export class DataAccessService {
 
     return this.findDocuments(PlaceDocument, documentFilters);
   }
-
 }
 
 export class ConnectionSettings {

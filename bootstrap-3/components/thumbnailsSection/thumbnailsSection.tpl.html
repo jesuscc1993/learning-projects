@@ -1,0 +1,26 @@
+<section id="{{ section.id }}">
+    <div class="title">
+        <div class="container scroll-reveal">
+            <h2>{{ section.title }}</h2>
+            <p>{{ section.description }}</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 section-entry scroll-reveal-work" ng-repeat="entry in section.entries">
+                <div class="thumbnail">
+                    <img class="img-responsive" ng-src="{{ entry.pictureUrl }}" />
+                    <div class="caption">
+                        <h3>{{ entry.title }}</h3>
+                        <p>{{ entry.description }}</p>
+                        <a class="btn btn-info" ng-href="{{ entry.url }}">
+                            <i class="fa fa-external-link"></i>
+                            <span>Read more...</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

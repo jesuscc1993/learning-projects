@@ -1,0 +1,23 @@
+<nav id="contact" class="navbar navbar-inverse footer" role="navigation">
+    <div class="container">
+
+        <ul class="hidden-xs nav navbar-nav">
+            <li>
+                <a>{{ footer.linksLabel }}</a>
+            </li>
+            <li ng-repeat="entry in footer.links">
+                <a ng-href="{{ entry.url }}">
+                    <i class="fa fa-lg {{ entry.icon }}"></i>
+                    {{ entry.label }}
+                </a>
+            </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a><small>{{ footer.copyright }}</small></a>
+            </li>
+        </ul>
+
+    </div>
+</nav>

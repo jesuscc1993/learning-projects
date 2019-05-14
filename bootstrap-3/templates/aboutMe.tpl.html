@@ -1,0 +1,19 @@
+<section id="{{ aboutMe.id }}">
+    <div class="container">
+        <h2>{{ aboutMe.title }}</h2>
+    </div>
+
+    <div class="container scroll-reveal">
+        <div class="jumbotron">
+            <div class="pull-left thumbnail photo">
+                <img class="img-responsive" ng-src="{{ aboutMe.pictureUrl }}">
+                <div class="caption">
+                    <span class="pull-right">{{ aboutMe.pictureCaption }}</span>
+                </div>
+            </div>
+            <div>
+                <p ng-repeat="paragraph in aboutMe.entries">{{ paragraph }}</p>
+            </div>
+        </div>
+    </div>
+</section>

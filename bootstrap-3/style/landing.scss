@@ -1,0 +1,158 @@
+body {
+    $dark-gray: #666;
+    $darker-gray: #111;
+    font-family: 'Roboto';
+    background-color: black;
+
+    .landing-page {
+        $nav-height: 52px;
+        opacity: 0;
+
+        &.loaded {
+            opacity: 1;
+            transition: 250ms;
+        }
+
+        section {
+            background: no-repeat fixed center;
+            background-size: cover;
+
+            > .container {
+                padding: 5vh 0;
+            }
+
+            > .title {
+                @extend .black-glow;
+                color: white;
+                background: $darker-gray;
+                padding: 5vh 0;
+
+                h2 {
+                    font-size: 3em;
+                    margin: 2.5vh 0;
+                }
+            }
+        }
+
+        #aboutMe {
+            background: white;
+
+            > .container {
+                padding: 0;
+
+                h2 {
+                    font-size: 3em;
+                    margin: 7.5vh 0 0;
+                }
+            }
+
+            .container {
+                padding-top: 0;
+
+                .photo {
+                    margin: 0 4vh 4vh 0;
+
+                    img {
+                        max-height: 376px;
+                    }
+                }
+            }
+        }
+
+        #works {
+            background-image: url('../res/pictures/works.jpg');
+            color: white;
+        }
+
+        #hobbies {
+            background-image: url('../res/pictures/hobbies.jpg');
+            color: white;
+        }
+
+        .content {
+            margin-top: $nav-height;
+
+            .btn {
+                transition: .1s;
+            }
+
+            .jumbotron,
+            .thumbnail {
+                background-color: rgba(white, .975);
+            }
+
+            .jumbotron {
+                color: $dark-gray;
+            }
+
+            .content-fade {
+                min-height: 33vh;
+            }
+        }
+
+        .header,
+        .footer {
+            @extend .black-glow;
+            background-color: $darker-gray;
+            border-radius: 0;
+            border: none;
+        }
+
+        .header {
+            position: absolute;
+            z-index: 10;
+            width: 100%;
+
+            &.affix {
+                position: fixed;
+                top: 0;
+            }
+        }
+
+        .footer {
+            .fa {
+                vertical-align: -5%;
+            }
+        }
+
+        .navbar-toggle {
+            line-height: 0;
+        }
+
+        .footer {
+            margin: 0;
+        }
+
+        .lightgray {
+            color: #9d9d9d;
+        }
+
+        /* Carousel */
+        .carousel {
+            $width: 1920px;
+            background: black;
+
+            .carousel-caption {
+                bottom: .5vh;
+            }
+
+            .carousel-indicators {
+                bottom: 0;
+                margin-bottom: 2vh;
+                line-height: 0;
+                cursor: pointer;
+            }
+        }
+    }
+
+    /* Extendable */
+    .black-glow {
+        box-shadow: 0 0 8px rgba(black, .5);
+    }
+}
+
+@media(max-width:767px) {
+    .section-entry {
+        margin: 0 2.5vw;
+    }
+}
