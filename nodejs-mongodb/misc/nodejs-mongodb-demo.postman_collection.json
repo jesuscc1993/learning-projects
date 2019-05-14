@@ -1,0 +1,201 @@
+{
+	"info": {
+		"_postman_id": "a4743580-0642-4d8b-8983-873ae5a8f85d",
+		"name": "nodejs-mongodb-demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET localhost:3000/noises",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t \"location \": {\n\t\t \"type \":  \"Point\",\n\t\t \"coordinates \": [0, 0]\n\t},\n\t \"decibels \": 60,\n\t \"date \": \"2018-09-05T14:41:36.993Z\",\n\t \"deviceId \": 1\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/noises",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"noises"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST localhost:3000/noises",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"location\": {\n\t\t\"type\":  \"Point\",\n\t\t\"coordinates\": [0, 0]\n\t},\n\t\"decibels\": 30,\n\t\"deviceId\": 1\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/noises",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"noises"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST localhost:3000/noises/filter",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"location\": {\n\t\t\"type\":  \"Point\",\n\t    \"coordinates\": [-0.005, 0.001]\n\t},\n\t\"fromDate\": \"2018-09-12T12:00:00.000Z\",\n\t\"toDate\": \"2018-09-30T12:00:00.000Z\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/noises/filter",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"noises",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST localhost:3000/noises/statistics",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"location\": {\n\t\t\"type\":  \"Point\",\n\t    \"coordinates\": [-0.005, 0.001]\n\t},\n\t\"fromDate\": \"2018-09-12T12:00:00.000Z\",\n\t\"toDate\": \"2018-09-30T12:00:00.000Z\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/noises/average",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"noises",
+						"average"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET localhost:3000/places",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t \"location \": {\n\t\t \"type \":  \"Point\",\n\t\t \"coordinates \": [0, 0]\n\t},\n\t \"decibels \": 60,\n\t \"date \": \"2018-09-05T14:41:36.993Z\",\n\t \"deviceId \": 1\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/places",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"places"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST localhost:3000/places",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"location\": {\n\t\t\"type\":  \"Point\",\n\t\t\"coordinates\": [0, 0]\n\t},\n\t\"name\": \"Center\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/places",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"places"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST localhost:3000/places/filter",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"location\": {\n\t\t\"type\":  \"Point\",\n\t    \"coordinates\": [-0.005, 0.001]\n\t}\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/places/filter",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"places",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

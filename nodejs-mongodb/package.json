@@ -1,0 +1,30 @@
+{
+  "name": "nodejs-mongodb-demo",
+  "version": "1.0.0",
+  "description": "node + express + mongoDB demo",
+  "main": "build/app.js",
+  "scripts": {
+    "build": "tsc",
+    "serve": "node build/app.js",
+    "start": "tsc && npm run serve",
+    "start-mongodb": "sudo mongod --dbpath=/data/db",
+    "start-docker-db": "docker run --rm --name nodejs-mongodb-demo -p 127.0.0.1:27017:27017 mongo",
+    "stop-docker-db": "docker kill nodejs-mongodb-demo"
+  },
+  "dependencies": {
+    "@types/es6-shim": "^0.31.37",
+    "@types/express": "^4.16.0",
+    "@types/lodash": "^4.14.116",
+    "@types/moment": "^2.13.0",
+    "@types/mongodb": "^3.1.4",
+    "@types/mongoose": "^5.2.11",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "lodash": "^4.17.11",
+    "moment": "^2.22.2",
+    "mongodb": "^3.1.4",
+    "mongoose": "^5.2.14",
+    "rxjs": "^6.3.2",
+    "typescript": "^3.0.3"
+  }
+}
