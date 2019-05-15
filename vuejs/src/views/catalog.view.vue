@@ -1,6 +1,5 @@
 <!-- script -->
 <script lang="ts">
-import { Product } from '../domain/products';
 import Vue from 'vue';
 
 import AppPrompt from '../components/app-prompt.component.vue';
@@ -8,6 +7,7 @@ import { productsService } from '../services/products.service';
 import { pipe } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { productsStore } from '../stores/products.store';
+import { Product } from '../domain/product.types';
 
 type DataType = {
   headers: { text: string; value: string; align: string; sortable: boolean }[];

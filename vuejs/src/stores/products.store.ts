@@ -1,4 +1,4 @@
-import { Product } from '@/domain/products';
+import { Product } from '@/domain/product.types';
 import Vuex, { ActionContext } from 'vuex';
 
 type State = {

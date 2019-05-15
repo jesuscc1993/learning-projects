@@ -12,9 +12,5 @@ class FirebaseService {
     this.app = firebase.initializeApp(environment.firebaseConfig);
     this.firestore = this.app.firestore();
   }
-
-  collection(collectionPath: string) {
-    return this.firestore.collection(collectionPath);
-  }
 }
 export const firebaseService = new FirebaseService();
