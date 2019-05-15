@@ -1,6 +1,6 @@
 import { DocumentsDao } from '@/data/documents.dao';
 import { Product } from '@/domain/product.types';
-import { productsStore } from '@/stores/products.store';
+import store from '@/stores/central.store';
 import { tap } from 'rxjs/operators';
 
 class ProductsService {
@@ -11,18 +11,16 @@ class ProductsService {
   }
 
   getProducts() {
-    return this.productsDao.getDocuments().pipe(tap(products => productsStore.dispatch('setProducts', products)));
+    return this.productsDao.getDocuments().pipe(tap(products => store.dispatch('setProducts', products)));
   }
   addProduct(product: Product) {
-    return this.productsDao.addDocument(product).pipe(tap(() => productsStore.dispatch('addProduct', product)));
+    return this.productsDao.addDocument(product).pipe(tap(() => store.dispatch('addProduct', product)));
   }
   updateProduct(product: Product) {
-    return this.productsDao.updateDocument(product).pipe(tap(() => productsStore.dispatch('updateProduct', product)));
+    return this.productsDao.updateDocument(product).pipe(tap(() => store.dispatch('updateProduct', product)));
   }
   deleteProduct(productId: string) {
-    return this.productsDao
-      .deleteDocument(productId)
-      .pipe(tap(() => productsStore.dispatch('deleteProduct', productId)));
+    return this.productsDao.deleteDocument(productId).pipe(tap(() => store.dispatch('deleteProduct', productId)));
   }
 }
 export const productsService = new ProductsService();

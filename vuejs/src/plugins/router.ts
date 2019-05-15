@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Router, { RouteConfig } from 'vue-router';
 
-import CatalogView from './../views/catalog.view.vue';
-import EmptyView from './../views/empty.view.vue';
 import HomeView from './../views/home.view.vue';
+import ProductsView from './../views/products.view.vue';
+import RowsView from './../views/rows.view.vue';
 
 Vue.use(Router);
 
@@ -16,12 +16,12 @@ export const routes: RouteConfig[] = [
   {
     path: '/list',
     name: 'list',
-    component: EmptyView,
+    component: RowsView,
   },
   {
     path: '/catalog',
     name: 'catalog',
-    component: CatalogView,
+    component: ProductsView,
   },
 ];
 

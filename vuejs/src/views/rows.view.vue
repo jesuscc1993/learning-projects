@@ -3,16 +3,16 @@
 import Vue from 'vue';
 
 import AppPrompt from '../components/app-prompt.component.vue';
-import { productsService } from '../services/products.service';
+import { rowsService } from '../services/rows.service';
 import { pipe } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { productsStore } from '../stores/products.store';
-import { Product } from '../domain/product.types';
+import store from '../stores/central.store';
+import { Row } from '../domain/row.types';
 
 type DataType = {
   headers: { text: string; value: string; align: string; sortable: boolean }[];
   isModalOpen: boolean;
-  productBeingUpdated?: Product;
+  rowBeingUpdated?: Row;
 };
 
 export default Vue.extend({
@@ -23,36 +23,37 @@ export default Vue.extend({
     return <DataType>{
       headers: [
         { text: this.$t('product.name'), value: 'name', align: 'left' },
+        { text: this.$t('product.quantity'), value: 'quantity', align: 'left' },
         { text: '', value: 'edit', align: 'right', sortable: false },
       ],
       isModalOpen: false,
-      productBeingUpdated: undefined,
+      rowBeingUpdated: undefined,
     };
   },
   created() {
-    productsService.getProducts().subscribe();
+    rowsService.getRows().subscribe();
   },
   methods: {
-    openEditionModal(product?: Product) {
-      this.productBeingUpdated = product;
+    openEditionModal(row?: Row) {
+      this.rowBeingUpdated = row;
       this.isModalOpen = true;
     },
     closeModal() {
       this.isModalOpen = false;
     },
 
-    saveProduct(product: Product) {
-      if (this.productBeingUpdated) {
-        productsService.updateProduct({ ...this.productBeingUpdated, ...product });
+    saveProduct(row: Partial<Row>) {
+      if (this.rowBeingUpdated) {
+        rowsService.updateRow({ ...this.rowBeingUpdated, ...row });
       } else {
-        productsService.addProduct(product);
+        rowsService.addRow(<Row>row);
       }
     },
-    deleteProduct(productId: string) {
-      productsService.deleteProduct(productId).subscribe();
+    deleteProduct(rowId: string) {
+      rowsService.deleteRow(rowId).subscribe();
     },
   },
-  store: productsStore,
+  store,
 });
 </script>
 
@@ -62,7 +63,7 @@ export default Vue.extend({
     <app-prompt
       :title="$t('product')"
       :placeholder="$t('product.name')"
-      :initialValue="productBeingUpdated ? this.productBeingUpdated.name : ''"
+      :initialValue="rowBeingUpdated ? this.rowBeingUpdated.name : ''"
       v-model="isModalOpen"
       @dismiss="saveProduct(({ name: $event }))"
     ></app-prompt>
@@ -73,9 +74,10 @@ export default Vue.extend({
       </v-btn>
     </div>
 
-    <v-data-table :headers="headers" :items="$store.getters.products" class="elevation-1">
+    <v-data-table :headers="headers" :items="$store.getters.rows" class="elevation-1">
       <template v-slot:items="props">
-        <td class="text-xs-left">{{ props.item.name }}</td>
+        <td class="text-xs-left">{{ props.item.product.name }}</td>
+        <td class="text-xs-left">{{ props.item.quantity }}</td>
         <td class="text-xs-right">
           <v-btn flat icon class="ma-0" @click="openEditionModal(props.item)">
             <v-icon>edit</v-icon>
