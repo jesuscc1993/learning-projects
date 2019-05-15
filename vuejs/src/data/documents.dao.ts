@@ -10,8 +10,8 @@ export class DocumentsDao {
     this.collection = firebaseService.firestore.collection(collectionPath);
   }
 
-  getDocuments() {
-    return collectionData(this.collection, 'id');
+  getDocuments<T>() {
+    return collectionData<T>(this.collection, 'id');
   }
   addDocument(document: firestore.DocumentData) {
     return of(this.collection.add(document));

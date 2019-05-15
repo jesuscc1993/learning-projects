@@ -3,6 +3,7 @@
   "generic.save": "Guardar",
   "product": "Producto",
   "product.name": "Nombre del Producto",
+  "product.quantity": "Cantidad del Producto",
   "sections": "Secciones",
   "sections.home": "Inicio",
   "sections.list": "Lista",

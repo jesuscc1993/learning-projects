@@ -35,19 +35,20 @@ export default Vue.extend({
   },
   methods: {
     openEditionModal(row?: Row) {
-      this.rowBeingUpdated = row;
-      this.isModalOpen = true;
+      alert('TODO');
+      // this.rowBeingUpdated = row;
+      // this.isModalOpen = true;
     },
     closeModal() {
       this.isModalOpen = false;
     },
 
     saveProduct(row: Partial<Row>) {
-      if (this.rowBeingUpdated) {
-        rowsService.updateRow({ ...this.rowBeingUpdated, ...row });
-      } else {
-        rowsService.addRow(<Row>row);
-      }
+      // if (this.rowBeingUpdated) {
+      //   rowsService.updateRow({ ...this.rowBeingUpdated, ...row });
+      // } else {
+      //   rowsService.addRow(<Row>row);
+      // }
     },
     deleteProduct(rowId: string) {
       rowsService.deleteRow(rowId).subscribe();

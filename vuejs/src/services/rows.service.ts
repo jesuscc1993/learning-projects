@@ -1,7 +1,8 @@
 import { DocumentsDao } from '@/data/documents.dao';
-import { Row } from '@/domain/row.types';
+import { Row, RowDto } from '@/domain/row.types';
 import store from '@/stores/central.store';
-import { tap } from 'rxjs/operators';
+import { from } from 'rxjs';
+import { flatMap, map, tap } from 'rxjs/operators';
 
 class ListService {
   readonly rowsDao: DocumentsDao;
@@ -11,7 +12,14 @@ class ListService {
   }
 
   getRows() {
-    return this.rowsDao.getDocuments().pipe(tap(rows => store.dispatch('setRows', rows)));
+    return this.rowsDao.getDocuments<RowDto>().pipe(
+      flatMap(rows =>
+        from(Promise.all(rows.map(row => row.product.get()))).pipe(
+          map(products => products.map((product, i) => <Row>{ ...rows[i], product: product.data() }))
+        )
+      ),
+      tap(rows => store.dispatch('setRows', rows))
+    );
   }
   addRow(row: Row) {
     return this.rowsDao.addDocument(row).pipe(tap(() => store.dispatch('addRow', row)));
