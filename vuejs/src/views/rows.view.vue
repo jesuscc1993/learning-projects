@@ -26,7 +26,7 @@ export default Vue.extend({
       headers: [
         { text: this.$t('row.product'), value: 'product.name', align: 'left' },
         { text: this.$t('row.quantity'), value: 'quantity', align: 'left' },
-        { text: this.$t('row.note'), value: 'notes', align: 'left' },
+        { text: this.$t('row.note'), value: 'note', align: 'left' },
         { text: '', value: 'edit', align: 'right', sortable: false },
       ],
       isModalOpen: false,
