@@ -27,6 +27,9 @@ export default Vue.extend({
     navigateToRoute(route: RouteConfig) {
       this.$router.push(route);
     },
+    dismiss() {
+      this.isOpen = false;
+    },
   },
 });
 </script>
@@ -40,6 +43,10 @@ export default Vue.extend({
           <v-list-tile-title class="title">{{$t('app.title')}}</v-list-tile-title>
         </v-list-tile>
       </v-list>
+
+      <v-toolbar-side-icon>
+        <v-icon @click="dismiss()">close</v-icon>
+      </v-toolbar-side-icon>
     </v-toolbar>
 
     <v-divider></v-divider>
