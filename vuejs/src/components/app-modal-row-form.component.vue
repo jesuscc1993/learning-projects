@@ -70,7 +70,7 @@ export default {
         <v-spacer></v-spacer>
         <v-btn
           color="primary"
-          :disabled="!(formData.product && formData.quantity)"
+          :disabled="!formData.product"
           @click="dismiss()"
         >{{ $t('generic.save') }}</v-btn>
       </v-card-actions>

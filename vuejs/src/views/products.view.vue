@@ -34,7 +34,7 @@ export default Vue.extend({
   },
   methods: {
     openEditionModal(product?: Product) {
-      this.productBeingUpdated = <Product>{ ...product };
+      this.productBeingUpdated = product ? { ...product } : undefined;
       this.isModalOpen = true;
     },
     closeModal() {
@@ -43,7 +43,7 @@ export default Vue.extend({
 
     saveProduct(product: Partial<Product>) {
       if (this.productBeingUpdated) {
-        productsService.updateProduct({ ...this.productBeingUpdated, ...product });
+        productsService.updateProduct(<Product>{ ...this.productBeingUpdated, ...product });
       } else {
         productsService.addProduct(<Product>product);
       }
@@ -67,13 +67,17 @@ export default Vue.extend({
       @dismiss="saveProduct(({ name: $event }))"
     ></app-prompt>
 
-    <div class="d-block text-xs-right">
-      <v-btn icon color="primary" class="mx-1 my-2" @click="openEditionModal()">
-        <v-icon>add</v-icon>
-      </v-btn>
-    </div>
-
     <v-data-table :headers="headers" :items="$store.getters.products" class="elevation-1">
+      <template v-slot:headerCell="props">
+        <span v-if="props.header.text">{{ props.header.text }}</span>
+
+        <span v-else>
+          <v-btn icon class="ma-0" @click="openEditionModal()">
+            <v-icon>add</v-icon>
+          </v-btn>
+        </span>
+      </template>
+
       <template v-slot:items="props">
         <td class="text-xs-left">{{ props.item.name }}</td>
         <td class="text-xs-right">

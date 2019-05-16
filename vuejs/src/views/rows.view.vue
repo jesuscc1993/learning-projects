@@ -76,16 +76,20 @@ export default Vue.extend({
       @dismiss="$event ? saveRow($event) : () => {}"
     ></app-modal-row-form>
 
-    <div class="d-block text-xs-right">
-      <v-btn icon color="primary" class="mx-1 my-2" @click="openEditionModal()">
-        <v-icon>add</v-icon>
-      </v-btn>
-    </div>
-
     <v-data-table :headers="headers" :items="$store.getters.rows" class="elevation-1">
+      <template v-slot:headerCell="props">
+        <span v-if="props.header.text">{{ props.header.text }}</span>
+
+        <span v-else>
+          <v-btn icon class="ma-0" @click="openEditionModal()">
+            <v-icon>add</v-icon>
+          </v-btn>
+        </span>
+      </template>
+
       <template v-slot:items="props">
         <td class="text-xs-left">{{ props.item.product.name }}</td>
-        <td class="text-xs-left">{{ props.item.quantity }}</td>
+        <td class="text-xs-left">{{ props.item.quantity || '-' }}</td>
         <td class="text-xs-left">{{ props.item.note || '-' }}</td>
         <td class="text-xs-right">
           <v-btn flat icon class="ma-0" @click="openEditionModal(props.item)">

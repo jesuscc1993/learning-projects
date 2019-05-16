@@ -3,10 +3,10 @@ import { firestore } from 'firebase';
 export type RowDto = {
   id?: string;
   product: firestore.DocumentReference;
-  quantity: number;
+  quantity?: number;
 };
 export type Row = {
   id?: string;
   product: firestore.DocumentData;
-  quantity: number;
+  quantity?: number;
 };
