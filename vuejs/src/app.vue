@@ -30,15 +30,25 @@ export default {
 $header-h: 64px;
 $footer-h: 48px;
 
+$c-primary: #00897b;
+
 .theme--dark {
   &.v-table {
     thead {
       tr {
         &:first-child {
-          background: #00897b;
+          background: $c-primary;
           border: none;
         }
       }
+    }
+  }
+  &.v-toolbar {
+    background: $c-primary;
+  }
+  &.v-list .v-list--disabled {
+    .v-icon {
+      color: #fff8;
     }
   }
 }
