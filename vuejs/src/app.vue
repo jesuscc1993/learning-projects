@@ -55,11 +55,34 @@ $c-primary: #00897b;
 
 #content {
   min-height: calc(100vh - #{$header-h + $footer-h});
-  max-width: 1280px;
+  max-width: 1152px;
   width: 100%;
   margin: 0 auto;
   padding: 32px 24px;
   box-sizing: border-box;
+}
+
+table.v-table {
+  thead,
+  tbody {
+    th,
+    td {
+      $v-padding: 8px;
+      $h-padding: 20px;
+
+      &:first-child {
+        padding: $v-padding #{$h-padding / 2} $v-padding $h-padding;
+      }
+
+      &:not(:nth-child(1)) {
+        padding: $v-padding #{$h-padding / 2};
+      }
+
+      &:last-child {
+        padding: $v-padding $h-padding $v-padding #{$h-padding / 2};
+      }
+    }
+  }
 }
 
 @media (max-width: 480px) {
@@ -88,19 +111,19 @@ $c-primary: #00897b;
 
       th,
       td {
-        $v-padding: 10px;
-        $h-padding: 4px;
+        $v-padding: 4px;
+        $h-padding: 10px;
 
         &:first-child {
-          padding: $h-padding $v-padding / 2 $h-padding $v-padding;
+          padding: $v-padding #{$h-padding / 2} $v-padding $h-padding;
         }
 
         &:not(:nth-child(1)) {
-          padding: $h-padding $v-padding / 2;
+          padding: $v-padding #{$h-padding / 2};
         }
 
         &:last-child {
-          padding: $h-padding $v-padding $h-padding $v-padding / 2;
+          padding: $v-padding $h-padding $v-padding #{$h-padding / 2};
         }
       }
 

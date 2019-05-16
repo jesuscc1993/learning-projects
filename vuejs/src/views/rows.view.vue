@@ -25,9 +25,9 @@ export default Vue.extend({
     return <DataType>{
       headers: [
         { text: this.$t('row.product'), value: 'product.name', align: 'left' },
-        { text: this.$t('row.quantity'), value: 'quantity', align: 'left' },
         { text: this.$t('row.note'), value: 'note', align: 'left' },
-        { text: '', value: 'edit', align: 'right', sortable: false },
+        { text: this.$t('row.quantity'), value: 'quantity', align: 'left' },
+        { text: '', align: 'right', sortable: false, action: 'add' },
       ],
       isModalOpen: false,
       rowBeingUpdated: { product: {} },
@@ -78,9 +78,9 @@ export default Vue.extend({
 
     <v-data-table :headers="headers" :items="$store.getters.rows" class="elevation-1">
       <template v-slot:headerCell="props">
-        <span v-if="props.header.text">{{ props.header.text }}</span>
+        <span v-if="!props.header.action">{{ props.header.text }}</span>
 
-        <span v-else>
+        <span v-else-if="props.header.action === 'add'">
           <v-btn icon class="ma-0" @click="openEditionModal()">
             <v-icon>add</v-icon>
           </v-btn>
@@ -88,10 +88,10 @@ export default Vue.extend({
       </template>
 
       <template v-slot:items="props">
-        <td class="text-xs-left">{{ props.item.product.name }}</td>
-        <td class="text-xs-left">{{ props.item.quantity || '-' }}</td>
-        <td class="text-xs-left">{{ props.item.note || '-' }}</td>
-        <td class="text-xs-right">
+        <td class="text-xs-left name">{{ props.item.product.name }}</td>
+        <td class="text-xs-left note">{{ props.item.note || '-' }}</td>
+        <td class="text-xs-left quantity">{{ props.item.quantity || '-' }}</td>
+        <td class="text-xs-right actions">
           <v-btn flat icon class="ma-0" @click="openEditionModal(props.item)">
             <v-icon>edit</v-icon>
           </v-btn>
@@ -107,8 +107,20 @@ export default Vue.extend({
 <!-- style -->
 <style lang="scss" scoped>
 td {
+  &:first-child,
+  &.quantity {
+    width: 1px;
+  }
   &:last-child {
-    width: 120px;
+    width: 104px;
+  }
+}
+
+@media (max-width: 480px) {
+  td {
+    &:last-child {
+      width: 80px;
+    }
   }
 }
 </style>

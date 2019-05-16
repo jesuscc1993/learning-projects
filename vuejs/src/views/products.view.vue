@@ -97,7 +97,15 @@ export default Vue.extend({
 <style lang="scss" scoped>
 td {
   &:last-child {
-    width: 120px;
+    width: 104px;
+  }
+}
+
+@media (max-width: 480px) {
+  td {
+    &:last-child {
+      width: 80px;
+    }
   }
 }
 </style>
