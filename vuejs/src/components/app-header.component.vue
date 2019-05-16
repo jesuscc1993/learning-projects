@@ -1,6 +1,5 @@
 <!-- script -->
 <script lang="ts">
-import { routes } from './../plugins/router';
 import AppSidemenu from './app-sidemenu.component.vue';
 import Vue from 'vue';
 

@@ -24,10 +24,11 @@ export default Vue.extend({
   data() {
     return <DataType>{
       headers: [
+        { text: '', value: 'checked', sortable: false },
         { text: this.$t('row.product'), value: 'product.name', align: 'left' },
         { text: this.$t('row.note'), value: 'note', align: 'left' },
         { text: this.$t('row.quantity'), value: 'quantity', align: 'left' },
-        { text: '', align: 'right', sortable: false, action: 'add' },
+        { text: '', value: '', align: 'right', sortable: false },
       ],
       isModalOpen: false,
       rowBeingUpdated: { product: {} },
@@ -59,9 +60,13 @@ export default Vue.extend({
         rowsService.addRow(<Row>row);
       }
     },
-    deleteProduct(rowId: string) {
+    updateRow(row: Row) {
+      rowsService.updateRow(row);
+    },
+    deleteRow(rowId: string) {
       rowsService.deleteRow(rowId).subscribe();
     },
+    checkRow() {},
   },
   store,
 });
@@ -80,7 +85,7 @@ export default Vue.extend({
       <template v-slot:headerCell="props">
         <span v-if="!props.header.action">{{ props.header.text }}</span>
 
-        <span v-else-if="props.header.action === 'add'">
+        <span v-else-if="!props.header.value.length">
           <v-btn icon class="ma-0" @click="openEditionModal()">
             <v-icon>add</v-icon>
           </v-btn>
@@ -88,6 +93,13 @@ export default Vue.extend({
       </template>
 
       <template v-slot:items="props">
+        <td class="text-xs-left check">
+          <v-checkbox
+            :input-value="props.item.checked"
+            hide-details
+            @change="checked => updateRow({ ...props.item, checked })"
+          ></v-checkbox>
+        </td>
         <td class="text-xs-left name">{{ props.item.product.name }}</td>
         <td class="text-xs-left note">{{ props.item.note || '-' }}</td>
         <td class="text-xs-left quantity">{{ props.item.quantity || '-' }}</td>
@@ -95,7 +107,7 @@ export default Vue.extend({
           <v-btn flat icon class="ma-0" @click="openEditionModal(props.item)">
             <v-icon>edit</v-icon>
           </v-btn>
-          <v-btn flat icon class="ma-0" @click="deleteProduct(props.item.id)">
+          <v-btn flat icon class="ma-0" @click="deleteRow(props.item.id)">
             <v-icon>delete</v-icon>
           </v-btn>
         </td>

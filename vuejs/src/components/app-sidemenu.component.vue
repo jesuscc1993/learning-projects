@@ -2,7 +2,7 @@
 <script lang="ts">
 import { RouteConfig } from 'vue-router';
 import Vue from 'vue';
-import { routes } from '../plugins/router';
+import { sections } from '../plugins/router';
 
 export default Vue.extend({
   props: {
@@ -10,7 +10,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      routes,
+      sections,
     };
   },
   computed: {
@@ -53,17 +53,17 @@ export default Vue.extend({
 
     <v-list class="pa-0">
       <v-list-tile
-        v-for="route in routes.filter(route => route.name)"
-        :key="route.title"
-        :disabled="route.name === $route.name"
-        @click="navigateToRoute(route)"
+        v-for="section in sections.filter(section => section.name)"
+        :key="section.title"
+        :disabled="section.name === $route.name"
+        @click="navigateToRoute(section)"
       >
         <v-list-tile-action>
-          <v-icon>{{ route.icon }}</v-icon>
+          <v-icon>{{ section.icon }}</v-icon>
         </v-list-tile-action>
 
         <v-list-tile-content>
-          <v-list-tile-title>{{ $t(`sections.${route.name}`) }}</v-list-tile-title>
+          <v-list-tile-title>{{ $t(`sections.${section.name}`) }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>

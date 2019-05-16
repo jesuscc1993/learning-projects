@@ -6,13 +6,7 @@ import RowsView from './../views/rows.view.vue';
 
 Vue.use(Router);
 
-export const routes: RouteConfig[] = [
-  // {
-  //   path: '/',
-  //   name: 'home',
-  //   icon: 'home',
-  //   component: HomeView,
-  // },
+export const sections = [
   {
     path: '/list',
     name: 'list',
@@ -27,6 +21,8 @@ export const routes: RouteConfig[] = [
   },
   { path: '*', redirect: '/list' },
 ];
+
+export const routes: RouteConfig[] = sections.map(({ icon, ...section }) => section);
 
 export const router = new Router({
   mode: 'history',
