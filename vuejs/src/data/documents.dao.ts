@@ -1,7 +1,7 @@
 import { firebaseService } from '@/services/firebase.service';
 import { firestore } from 'firebase';
 import { collectionData } from 'rxfire/firestore';
-import { of } from 'rxjs';
+import { from } from 'rxjs';
 
 export class DocumentsDao {
   readonly collection: firestore.CollectionReference;
@@ -10,16 +10,19 @@ export class DocumentsDao {
     this.collection = firebaseService.firestore.collection(collectionPath);
   }
 
-  getDocuments<T>() {
+  protected getDocumentReference({ collectionPath, documentId }: { collectionPath?: string; documentId: string }) {
+    return (collectionPath ? firebaseService.firestore.collection(collectionPath) : this.collection).doc(documentId);
+  }
+  protected getDocuments<T>() {
     return collectionData<T>(this.collection, 'id');
   }
-  addDocument(document: firestore.DocumentData) {
-    return of(this.collection.add(document));
+  protected addDocument(document: firestore.DocumentData) {
+    return from(this.collection.add(document));
   }
-  updateDocument(document: firestore.DocumentData) {
-    return of(this.collection.doc(document.id).update(document));
+  protected updateDocument({ id, ...document }: firestore.DocumentData) {
+    return from(this.getDocumentReference({ documentId: id }).update(document));
   }
-  deleteDocument(documentId: string) {
-    return of(this.collection.doc(documentId).delete());
+  protected deleteDocument(documentId: string) {
+    return from(this.getDocumentReference({ documentId }).delete());
   }
 }

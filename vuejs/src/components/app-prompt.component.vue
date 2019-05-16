@@ -40,7 +40,7 @@ export default {
 
 <!-- template -->
 <template>
-  <v-dialog v-model="isOpen" width="500">
+  <v-dialog v-model="isOpen" width="480">
     <v-card>
       <v-card-title class="headline primary" primary-title>{{ title }}</v-card-title>
 

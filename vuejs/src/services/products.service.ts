@@ -1,26 +1,26 @@
-import { DocumentsDao } from '@/data/documents.dao';
+import { ProductsDao } from '@/data/products.dao';
 import { Product } from '@/domain/product.types';
 import store from '@/stores/central.store';
 import { tap } from 'rxjs/operators';
 
 class ProductsService {
-  readonly productsDao: DocumentsDao;
+  readonly productsDao: ProductsDao;
 
   constructor() {
-    this.productsDao = new DocumentsDao('products');
+    this.productsDao = new ProductsDao();
   }
 
   getProducts() {
-    return this.productsDao.getDocuments().pipe(tap(products => store.dispatch('setProducts', products)));
+    return this.productsDao.getProducts().pipe(tap(products => store.dispatch('setProducts', products)));
   }
   addProduct(product: Product) {
-    return this.productsDao.addDocument(product).pipe(tap(() => store.dispatch('addProduct', product)));
+    return this.productsDao.addProduct(product).pipe(tap(() => store.dispatch('addProduct', product)));
   }
   updateProduct(product: Product) {
-    return this.productsDao.updateDocument(product).pipe(tap(() => store.dispatch('updateProduct', product)));
+    return this.productsDao.updateProduct(product).pipe(tap(() => store.dispatch('updateProduct', product)));
   }
   deleteProduct(productId: string) {
-    return this.productsDao.deleteDocument(productId).pipe(tap(() => store.dispatch('deleteProduct', productId)));
+    return this.productsDao.deleteProduct(productId).pipe(tap(() => store.dispatch('deleteProduct', productId)));
   }
 }
 export const productsService = new ProductsService();

@@ -3,9 +3,12 @@
   "generic.save": "Guardar",
   "product": "Producto",
   "product.name": "Nombre del Producto",
-  "product.quantity": "Cantidad del Producto",
+  "row": "Fila de Lista",
+  "row.note": "Nota",
+  "row.product": "Product",
+  "row.quantity": "Cantidad del Producto",
   "sections": "Secciones",
+  "sections.catalog": "Catálogo",
   "sections.home": "Inicio",
-  "sections.list": "Lista",
-  "sections.catalog": "Catálogo"
+  "sections.list": "Lista"
 }

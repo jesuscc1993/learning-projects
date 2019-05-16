@@ -34,7 +34,7 @@ export default Vue.extend({
   },
   methods: {
     openEditionModal(product?: Product) {
-      this.productBeingUpdated = product;
+      this.productBeingUpdated = <Product>{ ...product };
       this.isModalOpen = true;
     },
     closeModal() {
@@ -90,4 +90,10 @@ export default Vue.extend({
 </template>
 
 <!-- style -->
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+td {
+  &:last-child {
+    width: 120px;
+  }
+}
+</style>

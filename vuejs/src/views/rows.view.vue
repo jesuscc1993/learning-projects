@@ -2,53 +2,62 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import AppPrompt from '../components/app-prompt.component.vue';
+import AppModalRowForm from '../components/app-modal-row-form.component.vue';
 import { rowsService } from '../services/rows.service';
 import { pipe } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import store from '../stores/central.store';
 import { Row } from '../domain/row.types';
+import { productsService } from '../services/products.service';
+import { Product } from '../domain/product.types';
 
 type DataType = {
   headers: { text: string; value: string; align: string; sortable: boolean }[];
   isModalOpen: boolean;
-  rowBeingUpdated?: Row;
+  rowBeingUpdated: Partial<Row>;
 };
 
 export default Vue.extend({
   components: {
-    AppPrompt,
+    AppModalRowForm,
   },
   data() {
     return <DataType>{
       headers: [
-        { text: this.$t('product.name'), value: 'name', align: 'left' },
-        { text: this.$t('product.quantity'), value: 'quantity', align: 'left' },
+        { text: this.$t('row.product'), value: 'product.name', align: 'left' },
+        { text: this.$t('row.quantity'), value: 'quantity', align: 'left' },
+        { text: this.$t('row.note'), value: 'notes', align: 'left' },
         { text: '', value: 'edit', align: 'right', sortable: false },
       ],
       isModalOpen: false,
-      rowBeingUpdated: undefined,
+      rowBeingUpdated: { product: {} },
     };
   },
   created() {
     rowsService.getRows().subscribe();
+    productsService.getProducts().subscribe();
   },
   methods: {
     openEditionModal(row?: Row) {
-      alert('TODO');
-      // this.rowBeingUpdated = row;
-      // this.isModalOpen = true;
+      this.rowBeingUpdated = <Row>{
+        ...row,
+        product: row
+          ? this.$store.getters.products.find((product: Product) => product.id === row.product.id) || {}
+          : {},
+      };
+      this.isModalOpen = true;
     },
     closeModal() {
+      this.rowBeingUpdated = { product: {} };
       this.isModalOpen = false;
     },
 
-    saveProduct(row: Partial<Row>) {
-      // if (this.rowBeingUpdated) {
-      //   rowsService.updateRow({ ...this.rowBeingUpdated, ...row });
-      // } else {
-      //   rowsService.addRow(<Row>row);
-      // }
+    saveRow(row: Partial<Row>) {
+      if (this.rowBeingUpdated.id) {
+        rowsService.updateRow(<Row>{ ...this.rowBeingUpdated, ...row });
+      } else {
+        rowsService.addRow(<Row>row);
+      }
     },
     deleteProduct(rowId: string) {
       rowsService.deleteRow(rowId).subscribe();
@@ -61,13 +70,11 @@ export default Vue.extend({
 <!-- template -->
 <template>
   <div>
-    <app-prompt
-      :title="$t('product')"
-      :placeholder="$t('product.name')"
-      :initialValue="rowBeingUpdated ? this.rowBeingUpdated.name : ''"
+    <app-modal-row-form
+      :initialValue="this.rowBeingUpdated"
       v-model="isModalOpen"
-      @dismiss="saveProduct(({ name: $event }))"
-    ></app-prompt>
+      @dismiss="$event ? saveRow($event) : () => {}"
+    ></app-modal-row-form>
 
     <div class="d-block text-xs-right">
       <v-btn icon color="primary" class="mx-1 my-2" @click="openEditionModal()">
@@ -79,6 +86,7 @@ export default Vue.extend({
       <template v-slot:items="props">
         <td class="text-xs-left">{{ props.item.product.name }}</td>
         <td class="text-xs-left">{{ props.item.quantity }}</td>
+        <td class="text-xs-left">{{ props.item.note || '-' }}</td>
         <td class="text-xs-right">
           <v-btn flat icon class="ma-0" @click="openEditionModal(props.item)">
             <v-icon>edit</v-icon>
@@ -93,4 +101,10 @@ export default Vue.extend({
 </template>
 
 <!-- style -->
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+td {
+  &:last-child {
+    width: 120px;
+  }
+}
+</style>
