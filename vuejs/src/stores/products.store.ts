@@ -13,7 +13,7 @@ export const productsStore: Module<ProductsState, ProductsState> = {
   },
   mutations: {
     setProducts(state: ProductsState, products: Product[]) {
-      state.products = products;
+      state.products = products.sort((a, b) => (a.name > b.name ? 1 : -1));
     },
     addProduct(state: ProductsState, product: Product) {
       state.products = [...state.products, product];

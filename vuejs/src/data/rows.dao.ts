@@ -32,6 +32,9 @@ export class RowsDao extends DocumentsDao {
   deleteRow(rowId: string) {
     return this.deleteDocument(rowId);
   }
+  deleteAllRows() {
+    return this.deleteAllDocuments();
+  }
 
   private rowToDto(row: Row): RowDto {
     return {

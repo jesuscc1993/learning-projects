@@ -2,6 +2,7 @@ import { firebaseService } from '@/services/firebase.service';
 import { firestore } from 'firebase';
 import { collectionData } from 'rxfire/firestore';
 import { from } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 
 export class DocumentsDao {
   readonly collection: firestore.CollectionReference;
@@ -24,5 +25,10 @@ export class DocumentsDao {
   }
   protected deleteDocument(documentId: string) {
     return from(this.getDocumentReference({ documentId }).delete());
+  }
+  protected deleteAllDocuments() {
+    return from(this.collection.get()).pipe(
+      flatMap(snapshot => Promise.all(snapshot.docs.map(document => document.ref.delete())))
+    );
   }
 }

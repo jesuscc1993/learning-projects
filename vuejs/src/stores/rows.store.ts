@@ -24,6 +24,9 @@ export const rowsStore: Module<RowsState, RowsState> = {
     deleteRow(state: RowsState, rowId: string) {
       state.rows = state.rows.filter(row => row.id !== rowId);
     },
+    deleteAllRows(state: RowsState) {
+      state.rows = [];
+    },
   },
   actions: {
     setRows(context: RowsContext, rows: Row[]) {
@@ -37,6 +40,9 @@ export const rowsStore: Module<RowsState, RowsState> = {
     },
     deleteRow(context: RowsContext, rowId: number) {
       context.commit('deleteRow', rowId);
+    },
+    deleteAllRows(context: RowsContext) {
+      context.commit('deleteAllRows');
     },
   },
   getters: {

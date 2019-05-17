@@ -87,10 +87,10 @@ export default Vue.extend<Data, Methods, undefined>({
       <template v-slot:items="props">
         <td class="text-xs-left">{{ props.item.name }}</td>
         <td class="text-xs-right">
-          <v-btn flat icon class="ma-0" @click="openEditionModal(props.item)">
+          <v-btn flat icon class="ma-0" @click.stop="openEditionModal(props.item)">
             <v-icon>edit</v-icon>
           </v-btn>
-          <v-btn flat icon class="ma-0" @click="deleteProduct(props.item.id)">
+          <v-btn flat icon class="ma-0" @click.stop="deleteProduct(props.item.id)">
             <v-icon>delete</v-icon>
           </v-btn>
         </td>
@@ -102,16 +102,11 @@ export default Vue.extend<Data, Methods, undefined>({
 <!-- style -->
 <style lang="scss" scoped>
 td {
-  &:last-child {
-    width: 104px;
+  &.name {
+    width: 100%;
   }
-}
-
-@media (max-width: 480px) {
-  td {
-    &:last-child {
-      width: 80px;
-    }
+  &.actions {
+    white-space: nowrap;
   }
 }
 </style>

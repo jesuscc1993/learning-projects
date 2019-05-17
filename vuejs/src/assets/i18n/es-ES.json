@@ -1,6 +1,7 @@
 {
   "app.title": "Lista de la Compra",
   "generic.save": "Guardar",
+  "list.clear": "Vaciar Lista",
   "product": "Producto",
   "product.name": "Nombre del Producto",
   "row": "Fila de Lista",

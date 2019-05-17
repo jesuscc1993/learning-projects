@@ -11,23 +11,35 @@ import { Row } from '../domain/row.types';
 import { productsService } from '../services/products.service';
 import { Product } from '../domain/product.types';
 
-type DataType = {
-  headers: { text: string; value: string; align: string; sortable: boolean }[];
+type Data = {
+  headers: { text: string; value: string; align?: string; sortable?: boolean }[];
   isModalOpen: boolean;
   rowBeingUpdated: Partial<Row>;
 };
+type Methods = {
+  openEditionModal: (row?: Row) => void;
+  closeModal: () => void;
+  saveRow: (row: Partial<Row>) => void;
+  updateRow: (row: Row) => void;
+  deleteRow: (rowId: string) => void;
+  toggleRowChecked: ({ checked, ...row }: Row) => void;
+  clearRows: () => void;
+};
+type Computed = {
+  eligibleProducts: () => void;
+};
 
-export default Vue.extend({
+export default Vue.extend<Data, Methods, Computed>({
   components: {
     AppModalRowForm,
   },
   data() {
-    return <DataType>{
+    return {
       headers: [
         { text: '', value: 'checked', sortable: false },
-        { text: this.$t('row.product'), value: 'product.name', align: 'left' },
-        { text: this.$t('row.note'), value: 'note', align: 'left' },
-        { text: this.$t('row.quantity'), value: 'quantity', align: 'left' },
+        { text: <string>this.$t('row.product'), value: 'product.name', align: 'left' },
+        { text: <string>this.$t('row.note'), value: 'note', align: 'left' },
+        { text: <string>this.$t('row.quantity'), value: 'quantity', align: 'left' },
         { text: '', value: '', align: 'right', sortable: false },
       ],
       isModalOpen: false,
@@ -69,6 +81,18 @@ export default Vue.extend({
     toggleRowChecked({ checked, ...row }: Row) {
       this.updateRow({ ...row, checked: !checked });
     },
+    clearRows() {
+      rowsService.deleteAllRows().subscribe();
+    },
+  },
+  computed: {
+    eligibleProducts() {
+      return this.$store.getters.products.filter(
+        product =>
+          !this.$store.getters.rows.find(row => row.product.id === product.id) ||
+          (this.rowBeingUpdated.product && product.id === this.rowBeingUpdated.product.id)
+      );
+    },
   },
   store,
 });
@@ -79,6 +103,7 @@ export default Vue.extend({
   <div>
     <app-modal-row-form
       :initialValue="this.rowBeingUpdated"
+      :products="eligibleProducts"
       v-model="isModalOpen"
       @dismiss="$event ? saveRow($event) : () => {}"
     ></app-modal-row-form>
@@ -103,36 +128,34 @@ export default Vue.extend({
           <td class="text-xs-left note">{{ props.item.note || '-' }}</td>
           <td class="text-xs-left quantity">{{ props.item.quantity || '-' }}</td>
           <td class="text-xs-right actions">
-            <v-btn flat icon class="ma-0" @click="openEditionModal(props.item)">
+            <v-btn flat icon class="ma-0" @click.stop="openEditionModal(props.item)">
               <v-icon>edit</v-icon>
             </v-btn>
-            <v-btn flat icon class="ma-0" @click="deleteRow(props.item.id)">
+            <v-btn flat icon class="ma-0" @click.stop="deleteRow(props.item.id)">
               <v-icon>delete</v-icon>
             </v-btn>
           </td>
         </tr>
       </template>
     </v-data-table>
+
+    <div class="text-xs-right">
+      <v-btn class="primary my-2 mx-0" @click="clearRows()" :disabled="!$store.getters.rows.length">
+        {{$t('list.clear')}}
+        <v-icon>delete</v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
 <!-- style -->
 <style lang="scss" scoped>
 td {
-  &:first-child,
-  &.quantity {
-    width: 1px;
+  &.name {
+    width: 100%;
   }
-  &:last-child {
-    width: 104px;
-  }
-}
-
-@media (max-width: 480px) {
-  td {
-    &:last-child {
-      width: 80px;
-    }
+  &.actions {
+    white-space: nowrap;
   }
 }
 </style>

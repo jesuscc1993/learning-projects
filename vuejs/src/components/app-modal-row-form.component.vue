@@ -5,12 +5,14 @@ import Vue from 'vue';
 import { Row } from '../domain/row.types';
 import store from '../stores/central.store';
 import { formRules } from '../domain/forms';
+import { Product } from '../domain/product.types';
 
 const emptyFormData = {};
 
 type Props = {
   initialValue: Row;
   value: boolean;
+  products: Product[];
 };
 type Data = {
   formData: Partial<Row>;
@@ -28,6 +30,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     initialValue: Object,
     value: Boolean,
+    products: Array,
   },
   data() {
     return {
@@ -73,7 +76,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
           <v-select
             :label="`${$t('row.product')}*`"
             :rules="[formRules.required]"
-            :items="$store.getters.products"
+            :items="products"
             v-model="formData.product"
           >
             <template slot="selection" slot-scope="data">{{ data.item.name }}</template>

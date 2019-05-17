@@ -1,6 +1,7 @@
 {
   "app.title": "Grocery List",
   "generic.save": "Save",
+  "list.clear": "Clear List",
   "product": "Product",
   "product.name": "Product Name",
   "row": "List Row",
