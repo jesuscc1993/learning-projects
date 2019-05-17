@@ -66,7 +66,9 @@ export default Vue.extend({
     deleteRow(rowId: string) {
       rowsService.deleteRow(rowId).subscribe();
     },
-    checkRow() {},
+    toggleRowChecked({ checked, ...row }: Row) {
+      this.updateRow({ ...row, checked: !checked });
+    },
   },
   store,
 });
@@ -93,24 +95,22 @@ export default Vue.extend({
       </template>
 
       <template v-slot:items="props">
-        <td class="text-xs-left check">
-          <v-checkbox
-            :input-value="props.item.checked"
-            hide-details
-            @change="checked => updateRow({ ...props.item, checked })"
-          ></v-checkbox>
-        </td>
-        <td class="text-xs-left name">{{ props.item.product.name }}</td>
-        <td class="text-xs-left note">{{ props.item.note || '-' }}</td>
-        <td class="text-xs-left quantity">{{ props.item.quantity || '-' }}</td>
-        <td class="text-xs-right actions">
-          <v-btn flat icon class="ma-0" @click="openEditionModal(props.item)">
-            <v-icon>edit</v-icon>
-          </v-btn>
-          <v-btn flat icon class="ma-0" @click="deleteRow(props.item.id)">
-            <v-icon>delete</v-icon>
-          </v-btn>
-        </td>
+        <tr @click="toggleRowChecked(props.item)" class="clickable">
+          <td class="text-xs-left check">
+            <v-checkbox :input-value="props.item.checked" hide-details @click="() => {}"></v-checkbox>
+          </td>
+          <td class="text-xs-left name">{{ props.item.product.name }}</td>
+          <td class="text-xs-left note">{{ props.item.note || '-' }}</td>
+          <td class="text-xs-left quantity">{{ props.item.quantity || '-' }}</td>
+          <td class="text-xs-right actions">
+            <v-btn flat icon class="ma-0" @click="openEditionModal(props.item)">
+              <v-icon>edit</v-icon>
+            </v-btn>
+            <v-btn flat icon class="ma-0" @click="deleteRow(props.item.id)">
+              <v-icon>delete</v-icon>
+            </v-btn>
+          </td>
+        </tr>
       </template>
     </v-data-table>
   </div>

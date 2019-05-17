@@ -2,6 +2,7 @@ body {
   margin: 0;
 }
 
+.clickable,
 .v-btn {
   cursor: pointer;
 }
