@@ -5,15 +5,18 @@ type ProductsContext = ActionContext<ProductsState, ProductsState>;
 
 export type ProductsState = {
   products: Product[];
+  areProductsReady: boolean;
 };
 
 export const productsStore: Module<ProductsState, ProductsState> = {
   state: {
     products: [],
+    areProductsReady: false,
   },
   mutations: {
     setProducts(state: ProductsState, products: Product[]) {
       state.products = products.sort((a, b) => (a.name > b.name ? 1 : -1));
+      state.areProductsReady = true;
     },
     addProduct(state: ProductsState, product: Product) {
       state.products = [...state.products, product];
@@ -26,22 +29,25 @@ export const productsStore: Module<ProductsState, ProductsState> = {
     },
   },
   actions: {
-    setProducts(context: ProductsContext, products: Product[]) {
-      context.commit('setProducts', products);
+    setProducts({ commit }, products: Product[]) {
+      commit('setProducts', products);
     },
-    updateProduct(context: ProductsContext, product: Product) {
-      context.commit('updateProduct', product);
+    updateProduct({ commit }, product: Product) {
+      commit('updateProduct', product);
     },
-    addProduct(context: ProductsContext, product: Product) {
-      context.commit('addProduct', product);
+    addProduct({ commit }, product: Product) {
+      commit('addProduct', product);
     },
-    deleteProduct(context: ProductsContext, productId: number) {
-      context.commit('deleteProduct', productId);
+    deleteProduct({ commit }, productId: number) {
+      commit('deleteProduct', productId);
     },
   },
   getters: {
-    products(state: ProductsState) {
-      return state.products;
+    products({ products }) {
+      return products;
+    },
+    areProductsReady({ areProductsReady }) {
+      return areProductsReady;
     },
   },
 };

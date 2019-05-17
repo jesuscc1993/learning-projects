@@ -8,26 +8,23 @@ class RowsService {
 
   constructor() {
     this.rowsDao = new RowsDao();
+    this.getRows().subscribe();
   }
 
   getRows() {
     return this.rowsDao.getRows().pipe(tap(rows => store.dispatch('setRows', rows)));
   }
-  addRow(row: Row) {
-    // return this.rowsDao.addRow(row).pipe(tap(() => store.dispatch('addRow', row)));
-    return this.rowsDao.addRow(row);
+  addRow(rowData: Row) {
+    return this.rowsDao.addRow(rowData).pipe(tap(row => store.dispatch('addRow', row)));
   }
-  updateRow(row: Row) {
-    // return this.rowsDao.updateRow(row).pipe(tap(() => store.dispatch('updateRow', row)));
-    return this.rowsDao.updateRow(row);
+  updateRow(rowData: Row) {
+    return this.rowsDao.updateRow(rowData).pipe(tap(row => store.dispatch('updateRow', row)));
   }
   deleteRow(rowId: string) {
-    // return this.rowsDao.deleteRow(rowId).pipe(tap(() => store.dispatch('deleteRow', rowId)));
-    return this.rowsDao.deleteRow(rowId);
+    return this.rowsDao.deleteRow(rowId).pipe(tap(() => store.dispatch('deleteRow', rowId)));
   }
   deleteAllRows() {
     return this.rowsDao.deleteAllRows().pipe(tap(() => store.dispatch('deleteAllRows')));
-    // return this.rowsDao.deleteAllRows();
   }
 }
 export const rowsService = new RowsService();

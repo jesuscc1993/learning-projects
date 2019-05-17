@@ -2,7 +2,7 @@ import { firestore } from 'firebase';
 
 export type RowDto = {
   id?: string;
-  product: firestore.DocumentReference;
+  productReference: firestore.DocumentReference;
   quantity?: number;
   checked?: boolean;
 };

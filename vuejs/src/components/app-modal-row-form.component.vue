@@ -2,10 +2,10 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import { Row } from '../domain/row.types';
-import store from '../stores/central.store';
 import { formRules } from '../domain/forms';
 import { Product } from '../domain/product.types';
+import { Row } from '../domain/row.types';
+import store from '../stores/central.store';
 
 const emptyFormData = {};
 

@@ -15,19 +15,23 @@ export class RowsDao extends DocumentsDao {
   getRows() {
     return this.getDocuments<RowDto>().pipe(
       flatMap(rows =>
-        from(Promise.all(rows.map(row => row.product.get()))).pipe(
+        from(Promise.all(rows.map(row => row.productReference.get()))).pipe(
           map(products =>
-            products.map((product, i) => <Row>{ ...rows[i], product: { ...product.data(), id: rows[i].product.id } })
+            products.map(
+              (product, i) => <Row>{ ...rows[i], product: { ...product.data(), id: rows[i].productReference.id } }
+            )
           )
         )
       )
     );
   }
   addRow(row: Row) {
-    return this.addDocument(this.rowToDto(row));
+    return this.addDocument<RowDto>(this.rowToDto(row)).pipe(map(rowDto => <Row>{ ...rowDto, product: row.product }));
   }
   updateRow(row: Row) {
-    return this.updateDocument(this.rowToDto(row));
+    return this.updateDocument<RowDto>(this.rowToDto(row)).pipe(
+      map(rowDto => <Row>{ ...rowDto, product: row.product })
+    );
   }
   deleteRow(rowId: string) {
     return this.deleteDocument(rowId);
@@ -36,10 +40,13 @@ export class RowsDao extends DocumentsDao {
     return this.deleteAllDocuments();
   }
 
-  private rowToDto(row: Row): RowDto {
-    return {
+  private rowToDto({ product, ...row }: Row) {
+    return <RowDto>{
       ...row,
-      product: this.getDocumentReference({ collectionPath: productsCollectionPath, documentId: row.product.id }),
+      productReference: this.getDocumentReference({
+        collectionPath: productsCollectionPath,
+        documentId: product.id,
+      }),
     };
   }
 }

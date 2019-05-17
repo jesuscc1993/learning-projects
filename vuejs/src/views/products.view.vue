@@ -1,13 +1,13 @@
 <!-- script -->
 <script lang="ts">
 import Vue from 'vue';
-
-import AppPrompt from '../components/app-prompt.component.vue';
-import { productsService } from '../services/products.service';
 import { pipe } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import store from '../stores/central.store';
+
+import AppPrompt from '../components/app-prompt.component.vue';
 import { Product } from '../domain/product.types';
+import { productsService } from '../services/products.service';
+import store from '../stores/central.store';
 
 type Data = {
   headers: { text: string; value: string; align: string; sortable: boolean }[];
@@ -35,9 +35,6 @@ export default Vue.extend<Data, Methods, undefined>({
       productBeingUpdated: undefined,
     };
   },
-  created() {
-    productsService.getProducts().subscribe();
-  },
   methods: {
     openEditionModal(product?: Product) {
       this.productBeingUpdated = product ? { ...product } : undefined;
@@ -49,9 +46,9 @@ export default Vue.extend<Data, Methods, undefined>({
 
     saveProduct(product: Partial<Product>) {
       if (this.productBeingUpdated) {
-        productsService.updateProduct(<Product>{ ...this.productBeingUpdated, ...product });
+        productsService.updateProduct(<Product>{ ...this.productBeingUpdated, ...product }).subscribe();
       } else {
-        productsService.addProduct(<Product>product);
+        productsService.addProduct(<Product>product).subscribe();
       }
     },
     deleteProduct(productId: string) {
@@ -73,7 +70,12 @@ export default Vue.extend<Data, Methods, undefined>({
       @dismiss="saveProduct(({ name: $event }))"
     ></app-prompt>
 
-    <v-data-table :headers="headers" :items="$store.getters.products" class="elevation-1">
+    <v-data-table
+      :headers="headers"
+      :items="$store.getters.products"
+      :loading="!$store.getters.areProductsReady"
+      class="elevation-1"
+    >
       <template v-slot:headerCell="props">
         <span v-if="props.header.text">{{ props.header.text }}</span>
 

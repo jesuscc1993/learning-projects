@@ -1,7 +1,8 @@
 <!-- script -->
 <script lang="ts">
-import AppSidemenu from './app-sidemenu.component.vue';
 import Vue from 'vue';
+
+import AppSidemenu from './app-sidemenu.component.vue';
 
 type Data = {
   isSidemenuOpen: boolean;

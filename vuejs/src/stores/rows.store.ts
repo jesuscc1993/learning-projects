@@ -5,15 +5,18 @@ type RowsContext = ActionContext<RowsState, RowsState>;
 
 export type RowsState = {
   rows: Row[];
+  areRowsReady: boolean;
 };
 
 export const rowsStore: Module<RowsState, RowsState> = {
   state: {
     rows: [],
+    areRowsReady: false,
   },
   mutations: {
     setRows(state: RowsState, rows: Row[]) {
       state.rows = rows;
+      state.areRowsReady = true;
     },
     addRow(state: RowsState, row: Row) {
       state.rows = [...state.rows, row];
@@ -29,25 +32,28 @@ export const rowsStore: Module<RowsState, RowsState> = {
     },
   },
   actions: {
-    setRows(context: RowsContext, rows: Row[]) {
-      context.commit('setRows', rows);
+    setRows({ commit }, rows: Row[]) {
+      commit('setRows', rows);
     },
-    updateRow(context: RowsContext, row: Row) {
-      context.commit('updateRow', row);
+    updateRow({ commit }, row: Row) {
+      commit('updateRow', row);
     },
-    addRow(context: RowsContext, row: Row) {
-      context.commit('addRow', row);
+    addRow({ commit }, row: Row) {
+      commit('addRow', row);
     },
-    deleteRow(context: RowsContext, rowId: number) {
-      context.commit('deleteRow', rowId);
+    deleteRow({ commit }, rowId: number) {
+      commit('deleteRow', rowId);
     },
-    deleteAllRows(context: RowsContext) {
-      context.commit('deleteAllRows');
+    deleteAllRows({ commit }) {
+      commit('deleteAllRows');
     },
   },
   getters: {
-    rows(state: RowsState) {
-      return state.rows;
+    rows({ rows }) {
+      return rows;
+    },
+    areRowsReady({ areRowsReady }) {
+      return areRowsReady;
     },
   },
 };

@@ -1,8 +1,7 @@
 import { firebaseService } from '@/services/firebase.service';
 import { firestore } from 'firebase';
-import { collectionData } from 'rxfire/firestore';
 import { from } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { flatMap, map } from 'rxjs/operators';
 
 export class DocumentsDao {
   readonly collection: firestore.CollectionReference;
@@ -14,14 +13,20 @@ export class DocumentsDao {
   protected getDocumentReference({ collectionPath, documentId }: { collectionPath?: string; documentId: string }) {
     return (collectionPath ? firebaseService.firestore.collection(collectionPath) : this.collection).doc(documentId);
   }
-  protected getDocuments<T>() {
-    return collectionData<T>(this.collection, 'id');
+  protected getDocuments<T extends firestore.DocumentData>() {
+    return from(this.collection.get()).pipe(
+      flatMap(snapshot =>
+        Promise.all(snapshot.docs.map(document => <T>(<unknown>{ id: document.id, ...document.data() })))
+      )
+    );
   }
-  protected addDocument(document: firestore.DocumentData) {
-    return from(this.collection.add(document));
+  protected addDocument<T extends firestore.DocumentData>(document: firestore.DocumentData) {
+    return from(this.collection.add(document)).pipe(map(({ id }) => <T>(<unknown>{ id, ...document })));
   }
-  protected updateDocument({ id, ...document }: firestore.DocumentData) {
-    return from(this.getDocumentReference({ documentId: id }).update(document));
+  protected updateDocument<T extends firestore.DocumentData>({ id, ...document }: firestore.DocumentData) {
+    return from(this.getDocumentReference({ documentId: id }).update(document)).pipe(
+      map(() => <T>(<unknown>{ id, ...document }))
+    );
   }
   protected deleteDocument(documentId: string) {
     return from(this.getDocumentReference({ documentId }).delete());

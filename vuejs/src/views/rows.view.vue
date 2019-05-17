@@ -1,15 +1,14 @@
 <!-- script -->
 <script lang="ts">
 import Vue from 'vue';
-
-import AppModalRowForm from '../components/app-modal-row-form.component.vue';
-import { rowsService } from '../services/rows.service';
 import { pipe } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import store from '../stores/central.store';
-import { Row } from '../domain/row.types';
-import { productsService } from '../services/products.service';
+
+import AppModalRowForm from '../components/app-modal-row-form.component.vue';
 import { Product } from '../domain/product.types';
+import { Row } from '../domain/row.types';
+import { rowsService } from '../services/rows.service';
+import store from '../stores/central.store';
 
 type Data = {
   headers: { text: string; value: string; align?: string; sortable?: boolean }[];
@@ -20,9 +19,10 @@ type Methods = {
   openEditionModal: (row?: Row) => void;
   closeModal: () => void;
   saveRow: (row: Partial<Row>) => void;
+  toggleRowChecked: ({ checked, ...row }: Row) => void;
+  addRow: (row: Row) => void;
   updateRow: (row: Row) => void;
   deleteRow: (rowId: string) => void;
-  toggleRowChecked: ({ checked, ...row }: Row) => void;
   clearRows: () => void;
 };
 type Computed = {
@@ -46,10 +46,6 @@ export default Vue.extend<Data, Methods, Computed>({
       rowBeingUpdated: {},
     };
   },
-  created() {
-    rowsService.getRows().subscribe();
-    productsService.getProducts().subscribe();
-  },
   methods: {
     openEditionModal(row?: Row) {
       this.rowBeingUpdated = <Row>{
@@ -67,19 +63,23 @@ export default Vue.extend<Data, Methods, Computed>({
 
     saveRow(row: Partial<Row>) {
       if (this.rowBeingUpdated.id) {
-        rowsService.updateRow(<Row>{ ...this.rowBeingUpdated, ...row });
+        this.updateRow(<Row>{ ...this.rowBeingUpdated, ...row });
       } else {
-        rowsService.addRow(<Row>row);
+        this.addRow(<Row>row);
       }
-    },
-    updateRow(row: Row) {
-      rowsService.updateRow(row);
-    },
-    deleteRow(rowId: string) {
-      rowsService.deleteRow(rowId).subscribe();
     },
     toggleRowChecked({ checked, ...row }: Row) {
       this.updateRow({ ...row, checked: !checked });
+    },
+
+    addRow(row: Row) {
+      rowsService.addRow(row).subscribe();
+    },
+    updateRow(row: Row) {
+      rowsService.updateRow(row).subscribe();
+    },
+    deleteRow(rowId: string) {
+      rowsService.deleteRow(rowId).subscribe();
     },
     clearRows() {
       rowsService.deleteAllRows().subscribe();
@@ -88,8 +88,8 @@ export default Vue.extend<Data, Methods, Computed>({
   computed: {
     eligibleProducts() {
       return this.$store.getters.products.filter(
-        product =>
-          !this.$store.getters.rows.find(row => row.product.id === product.id) ||
+        (product: Product) =>
+          !this.$store.getters.rows.find((row: Row) => row.product.id === product.id) ||
           (this.rowBeingUpdated.product && product.id === this.rowBeingUpdated.product.id)
       );
     },
@@ -108,7 +108,12 @@ export default Vue.extend<Data, Methods, Computed>({
       @dismiss="$event ? saveRow($event) : () => {}"
     ></app-modal-row-form>
 
-    <v-data-table :headers="headers" :items="$store.getters.rows" class="elevation-1">
+    <v-data-table
+      :headers="headers"
+      :items="$store.getters.rows"
+      :loading="!$store.getters.areRowsReady"
+      class="elevation-1"
+    >
       <template v-slot:headerCell="props">
         <span v-if="props.header.value.length">{{ props.header.text }}</span>
 
