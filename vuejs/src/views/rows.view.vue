@@ -31,7 +31,7 @@ export default Vue.extend({
         { text: '', value: '', align: 'right', sortable: false },
       ],
       isModalOpen: false,
-      rowBeingUpdated: { product: {} },
+      rowBeingUpdated: {},
     };
   },
   created() {
@@ -44,12 +44,12 @@ export default Vue.extend({
         ...row,
         product: row
           ? this.$store.getters.products.find((product: Product) => product.id === row.product.id) || {}
-          : {},
+          : undefined,
       };
       this.isModalOpen = true;
     },
     closeModal() {
-      this.rowBeingUpdated = { product: {} };
+      this.rowBeingUpdated = {};
       this.isModalOpen = false;
     },
 

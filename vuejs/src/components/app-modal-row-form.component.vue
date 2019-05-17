@@ -4,17 +4,18 @@ import Vue from 'vue';
 
 import { Row } from '../domain/row.types';
 import store from '../stores/central.store';
+import { formRules } from '../domain/forms';
 
-const emptyFormData = { product: {} };
+const emptyFormData = {};
 
 type Props = {
   initialValue: Row;
   value: boolean;
-  title: string;
-  placeholder: string;
 };
 type Data = {
   formData: Partial<Row>;
+  isFormValid: boolean;
+  formRules: typeof formRules;
 };
 type Computed = {
   isOpen: boolean;
@@ -27,13 +28,12 @@ export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     initialValue: Object,
     value: Boolean,
-
-    title: String,
-    placeholder: String,
   },
   data() {
     return {
       formData: { ...emptyFormData },
+      isFormValid: false,
+      formRules,
     };
   },
   watch: {
@@ -68,30 +68,33 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     <v-card>
       <v-card-title class="headline primary" primary-title>{{ $t('row') }}</v-card-title>
 
-      <v-card-text>
-        <v-select
-          :label="$t('row.product')"
-          :items="$store.getters.products"
-          v-model="formData.product"
-        >
-          <template slot="selection" slot-scope="data">{{ data.item.name }}</template>
-          <template slot="item" slot-scope="data">{{ data.item.name }}</template>
-        </v-select>
+      <v-card-text v-if="isOpen">
+        <v-form v-model="isFormValid">
+          <v-select
+            :label="`${$t('row.product')}*`"
+            :rules="[formRules.required]"
+            :items="$store.getters.products"
+            v-model="formData.product"
+          >
+            <template slot="selection" slot-scope="data">{{ data.item.name }}</template>
+            <template slot="item" slot-scope="data">{{ data.item.name }}</template>
+          </v-select>
 
-        <v-text-field :label="$t('row.quantity')" v-model="formData.quantity"></v-text-field>
+          <v-text-field
+            :label="$t('row.quantity')"
+            :rules="[formRules.integer]"
+            v-model="formData.quantity"
+          ></v-text-field>
 
-        <v-text-field :label="$t('row.note')" v-model="formData.note"></v-text-field>
+          <v-text-field :label="$t('row.note')" v-model="formData.note"></v-text-field>
+        </v-form>
       </v-card-text>
 
       <v-divider></v-divider>
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          color="primary"
-          :disabled="!formData.product"
-          @click="dismiss()"
-        >{{ $t('generic.save') }}</v-btn>
+        <v-btn color="primary" :disabled="!isFormValid" @click="dismiss()">{{ $t('generic.save') }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

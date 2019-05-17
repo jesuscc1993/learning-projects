@@ -2,6 +2,8 @@
 <script lang="ts">
 import Vue from 'vue';
 
+import { formRules } from '../domain/forms';
+
 type Props = {
   initialValue: string;
   value: boolean;
@@ -10,6 +12,8 @@ type Props = {
 };
 type Data = {
   model: String;
+  isFormValid: boolean;
+  formRules: typeof formRules;
 };
 type Computed = {
   isOpen: boolean;
@@ -22,7 +26,6 @@ export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     initialValue: String,
     value: Boolean,
-
     title: String,
     placeholder: String,
   },
@@ -34,6 +37,8 @@ export default Vue.extend<Data, Methods, Computed, Props>({
   data() {
     return {
       model: this.initialValue,
+      isFormValid: false,
+      formRules,
     };
   },
   computed: {
@@ -62,19 +67,22 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     <v-card>
       <v-card-title class="headline primary" primary-title>{{ title }}</v-card-title>
 
-      <v-card-text>
-        <v-text-field v-if="isOpen" :label="placeholder" v-model="model" autofocus></v-text-field>
+      <v-card-text v-if="isOpen">
+        <v-form v-model="isFormValid">
+          <v-text-field
+            :label="`${placeholder}*`"
+            :rules="[formRules.required]"
+            v-model="model"
+            autofocus
+          ></v-text-field>
+        </v-form>
       </v-card-text>
 
       <v-divider></v-divider>
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          color="primary"
-          :disabled="!(model && model.length)"
-          @click="dismiss()"
-        >{{ $t('generic.save') }}</v-btn>
+        <v-btn color="primary" :disabled="!isFormValid" @click="dismiss()">{{ $t('generic.save') }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
