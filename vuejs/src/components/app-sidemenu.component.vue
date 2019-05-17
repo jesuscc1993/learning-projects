@@ -1,10 +1,25 @@
 <!-- script -->
 <script lang="ts">
-import { RouteConfig } from 'vue-router';
 import Vue from 'vue';
+import { RouteConfig } from 'vue-router';
+
 import { sections } from '../plugins/router';
 
-export default Vue.extend({
+type Props = {
+  value: boolean;
+};
+type Data = {
+  sections: typeof sections;
+};
+type Computed = {
+  isOpen: boolean;
+};
+type Methods = {
+  navigateToRoute: (route: RouteConfig) => void;
+  dismiss: () => void;
+};
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     value: Boolean,
   },

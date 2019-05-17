@@ -9,18 +9,24 @@ import { tap } from 'rxjs/operators';
 import store from '../stores/central.store';
 import { Product } from '../domain/product.types';
 
-type DataType = {
+type Data = {
   headers: { text: string; value: string; align: string; sortable: boolean }[];
   isModalOpen: boolean;
   productBeingUpdated?: Product;
 };
+type Methods = {
+  openEditionModal: (product?: Product) => void;
+  closeModal: () => void;
+  saveProduct: (product: Partial<Product>) => void;
+  deleteProduct: (productId: string) => void;
+};
 
-export default Vue.extend({
+export default Vue.extend<Data, Methods, undefined>({
   components: {
     AppPrompt,
   },
   data() {
-    return <DataType>{
+    return <Data>{
       headers: [
         { text: this.$t('product.name'), value: 'name', align: 'left' },
         { text: '', value: 'edit', align: 'right', sortable: false },

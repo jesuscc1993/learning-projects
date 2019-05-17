@@ -1,10 +1,29 @@
 <!-- script -->
-<script>
+<script lang="ts">
+import Vue from 'vue';
+
+import { Row } from '../domain/row.types';
 import store from '../stores/central.store';
 
 const emptyFormData = { product: {} };
 
-export default {
+type Props = {
+  initialValue: Row;
+  value: boolean;
+  title: string;
+  placeholder: string;
+};
+type Data = {
+  formData: Partial<Row>;
+};
+type Computed = {
+  isOpen: boolean;
+};
+type Methods = {
+  dismiss: () => void;
+};
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     initialValue: Object,
     value: Boolean,
@@ -40,7 +59,7 @@ export default {
     },
   },
   store,
-};
+});
 </script>
 
 <!-- template -->

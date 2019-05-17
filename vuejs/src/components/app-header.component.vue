@@ -3,7 +3,19 @@
 import AppSidemenu from './app-sidemenu.component.vue';
 import Vue from 'vue';
 
-export default Vue.extend({
+type Data = {
+  isSidemenuOpen: boolean;
+};
+type Computed = {
+  isNavigationAvailable: boolean;
+};
+type Methods = {
+  navigateBackwards: () => void;
+  navigateForwards: () => void;
+  openSidemenu: () => void;
+};
+
+export default Vue.extend<Data, Methods, Computed>({
   data() {
     return {
       isSidemenuOpen: false,

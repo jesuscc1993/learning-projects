@@ -1,6 +1,24 @@
 <!-- script -->
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+type Props = {
+  initialValue: string;
+  value: boolean;
+  title: string;
+  placeholder: string;
+};
+type Data = {
+  model: String;
+};
+type Computed = {
+  isOpen: boolean;
+};
+type Methods = {
+  dismiss: () => void;
+};
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     initialValue: String,
     value: Boolean,
@@ -35,7 +53,7 @@ export default {
       this.isOpen = false;
     },
   },
-};
+});
 </script>
 
 <!-- template -->

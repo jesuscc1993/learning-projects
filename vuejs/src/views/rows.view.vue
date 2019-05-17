@@ -83,9 +83,9 @@ export default Vue.extend({
 
     <v-data-table :headers="headers" :items="$store.getters.rows" class="elevation-1">
       <template v-slot:headerCell="props">
-        <span v-if="!props.header.action">{{ props.header.text }}</span>
+        <span v-if="props.header.value.length">{{ props.header.text }}</span>
 
-        <span v-else-if="!props.header.value.length">
+        <span v-else>
           <v-btn icon class="ma-0" @click="openEditionModal()">
             <v-icon>add</v-icon>
           </v-btn>
