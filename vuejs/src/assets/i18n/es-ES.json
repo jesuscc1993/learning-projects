@@ -1,7 +1,10 @@
 {
   "app.title": "Lista de la Compra",
+  "generic.cancel": "Cancelar",
+  "generic.confirm": "Confirmar",
   "generic.save": "Guardar",
   "list.clear": "Vaciar Lista",
+  "list.clear.confirmation": "¿Seguro que quieres borrar la lista permanentemente?",
   "product": "Producto",
   "product.name": "Nombre del Producto",
   "row": "Fila de Lista",

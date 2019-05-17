@@ -1,7 +1,10 @@
 {
   "app.title": "Grocery List",
+  "generic.cancel": "Cancel",
+  "generic.confirm": "Confirm",
   "generic.save": "Save",
   "list.clear": "Clear List",
+  "list.clear.confirmation": "Are you sure you want to permanently clear the list?",
   "product": "Product",
   "product.name": "Product Name",
   "row": "List Row",

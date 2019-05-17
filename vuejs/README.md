@@ -34,5 +34,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## TODO
 
-- Add a feature to clear the current list
 - (EXTRA) Archive completed lists on a new collection

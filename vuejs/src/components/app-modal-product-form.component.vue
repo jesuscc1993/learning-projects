@@ -3,15 +3,19 @@
 import Vue from 'vue';
 
 import { formRules } from '../domain/forms';
+import { Product } from '../domain/product.types';
+import { Row } from '../domain/row.types';
+import store from '../stores/central.store';
+
+const emptyFormData = {};
 
 type Props = {
-  initialValue: string;
+  initialValue: Row;
   value: boolean;
-  title: string;
-  placeholder: string;
+  products: Product[];
 };
 type Data = {
-  model: String;
+  formData: Partial<Row>;
   isFormValid: boolean;
   formRules: typeof formRules;
 };
@@ -19,27 +23,27 @@ type Computed = {
   isOpen: boolean;
 };
 type Methods = {
-  dismiss: () => void;
+  save: () => void;
+  dismiss: (payload?: Row) => void;
 };
 
 export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
-    initialValue: String,
+    initialValue: Object,
     value: Boolean,
-    title: String,
-    placeholder: String,
-  },
-  watch: {
-    initialValue(value) {
-      this.model = this.initialValue;
-    },
+    products: Array,
   },
   data() {
     return {
-      model: this.initialValue,
+      formData: { ...emptyFormData },
       isFormValid: false,
       formRules,
     };
+  },
+  watch: {
+    initialValue(value) {
+      this.formData = { ...this.initialValue };
+    },
   },
   computed: {
     isOpen: {
@@ -52,28 +56,31 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     },
   },
   methods: {
-    dismiss() {
-      this.$emit('dismiss', this.model);
-      this.model = '';
+    save() {
+      this.dismiss(this.formData);
+      this.formData = { ...emptyFormData };
+    },
+    dismiss(payload?: Row) {
+      this.$emit('dismiss', payload);
       this.isOpen = false;
     },
   },
+  store,
 });
 </script>
 
 <!-- template -->
 <template>
-  <v-dialog v-model="isOpen" width="480">
+  <v-dialog v-model="isOpen" persistent width="480">
     <v-card>
-      <v-card-title class="headline primary" primary-title>{{ title }}</v-card-title>
+      <v-card-title class="headline primary" primary-title>{{ $t('product') }}</v-card-title>
 
       <v-card-text v-if="isOpen">
         <v-form v-model="isFormValid">
           <v-text-field
-            :label="`${placeholder}*`"
+            :label="`${$t('product.name')}*`"
             :rules="[formRules.required]"
-            v-model="model"
-            autofocus
+            v-model="formData.name"
           ></v-text-field>
         </v-form>
       </v-card-text>
@@ -82,7 +89,8 @@ export default Vue.extend<Data, Methods, Computed, Props>({
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary" :disabled="!isFormValid" @click="dismiss()">{{ $t('generic.save') }}</v-btn>
+        <v-btn @click="dismiss()">{{ $t('generic.cancel') }}</v-btn>
+        <v-btn color="primary" :disabled="!isFormValid" @click="save()">{{ $t('generic.save') }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

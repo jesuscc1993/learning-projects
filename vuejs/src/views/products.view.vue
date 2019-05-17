@@ -4,7 +4,7 @@ import Vue from 'vue';
 import { pipe } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import AppPrompt from '../components/app-prompt.component.vue';
+import AppModalProductForm from '../components/app-modal-product-form.component.vue';
 import { Product } from '../domain/product.types';
 import { productsService } from '../services/products.service';
 import store from '../stores/central.store';
@@ -23,7 +23,7 @@ type Methods = {
 
 export default Vue.extend<Data, Methods, undefined>({
   components: {
-    AppPrompt,
+    AppModalProductForm,
   },
   data() {
     return <Data>{
@@ -62,13 +62,11 @@ export default Vue.extend<Data, Methods, undefined>({
 <!-- template -->
 <template>
   <div>
-    <app-prompt
-      :title="$t('product')"
-      :placeholder="$t('product.name')"
-      :initialValue="productBeingUpdated ? this.productBeingUpdated.name : ''"
+    <app-modal-product-form
+      :initialValue="this.productBeingUpdated"
       v-model="isModalOpen"
-      @dismiss="saveProduct(({ name: $event }))"
-    ></app-prompt>
+      @dismiss="$event ? saveProduct($event) : () => {}"
+    ></app-modal-product-form>
 
     <v-data-table
       :headers="headers"

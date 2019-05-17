@@ -4,6 +4,7 @@ import Vue from 'vue';
 import { pipe } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+import AppConfirmationPrompt from '../components/app-confirmation-prompt.component.vue';
 import AppModalRowForm from '../components/app-modal-row-form.component.vue';
 import { Product } from '../domain/product.types';
 import { Row } from '../domain/row.types';
@@ -13,10 +14,12 @@ import store from '../stores/central.store';
 type Data = {
   headers: { text: string; value: string; align?: string; sortable?: boolean }[];
   isModalOpen: boolean;
+  isPromptOpen: boolean;
   rowBeingUpdated: Partial<Row>;
 };
 type Methods = {
   openEditionModal: (row?: Row) => void;
+  showRowsClearingPrompt: () => void;
   closeModal: () => void;
   saveRow: (row: Partial<Row>) => void;
   toggleRowChecked: ({ checked, ...row }: Row) => void;
@@ -31,6 +34,7 @@ type Computed = {
 
 export default Vue.extend<Data, Methods, Computed>({
   components: {
+    AppConfirmationPrompt,
     AppModalRowForm,
   },
   data() {
@@ -43,6 +47,7 @@ export default Vue.extend<Data, Methods, Computed>({
         { text: '', value: '', align: 'right', sortable: false },
       ],
       isModalOpen: false,
+      isPromptOpen: false,
       rowBeingUpdated: {},
     };
   },
@@ -55,6 +60,9 @@ export default Vue.extend<Data, Methods, Computed>({
           : undefined,
       };
       this.isModalOpen = true;
+    },
+    showRowsClearingPrompt() {
+      this.isPromptOpen = true;
     },
     closeModal() {
       this.rowBeingUpdated = {};
@@ -145,7 +153,19 @@ export default Vue.extend<Data, Methods, Computed>({
     </v-data-table>
 
     <div class="text-xs-right">
-      <v-btn class="primary my-2 mx-0" @click="clearRows()" :disabled="!$store.getters.rows.length">
+      <app-confirmation-prompt
+        :title="$t('list.clear')"
+        :body="$t('list.clear.confirmation')"
+        confirmationColor="warning"
+        v-model="isPromptOpen"
+        @dismiss="$event ? clearRows() : () => {}"
+      ></app-confirmation-prompt>
+
+      <v-btn
+        class="primary my-2 mx-0"
+        @click="showRowsClearingPrompt()"
+        :disabled="!$store.getters.rows.length"
+      >
         {{$t('list.clear')}}
         <v-icon>delete</v-icon>
       </v-btn>

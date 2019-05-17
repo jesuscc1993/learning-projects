@@ -23,7 +23,8 @@ type Computed = {
   isOpen: boolean;
 };
 type Methods = {
-  dismiss: () => void;
+  save: () => void;
+  dismiss: (payload?: Row) => void;
 };
 
 export default Vue.extend<Data, Methods, Computed, Props>({
@@ -55,9 +56,12 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     },
   },
   methods: {
-    dismiss() {
-      this.$emit('dismiss', this.formData);
+    save() {
+      this.dismiss(this.formData);
       this.formData = { ...emptyFormData };
+    },
+    dismiss(payload?: Row) {
+      this.$emit('dismiss', payload);
       this.isOpen = false;
     },
   },
@@ -67,7 +71,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
 
 <!-- template -->
 <template>
-  <v-dialog v-model="isOpen" width="480">
+  <v-dialog v-model="isOpen" persistent width="480">
     <v-card>
       <v-card-title class="headline primary" primary-title>{{ $t('row') }}</v-card-title>
 
@@ -97,7 +101,8 @@ export default Vue.extend<Data, Methods, Computed, Props>({
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary" :disabled="!isFormValid" @click="dismiss()">{{ $t('generic.save') }}</v-btn>
+        <v-btn @click="dismiss()">{{ $t('generic.cancel') }}</v-btn>
+        <v-btn color="primary" :disabled="!isFormValid" @click="save()">{{ $t('generic.save') }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
