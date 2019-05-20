@@ -1,7 +1,5 @@
 import { Row } from '@/domain/row.types';
-import { ActionContext, Module } from 'vuex';
-
-type RowsContext = ActionContext<RowsState, RowsState>;
+import { Module } from 'vuex';
 
 export type RowsState = {
   rows: Row[];

@@ -1,7 +1,5 @@
 import { Product } from '@/domain/product.types';
-import { ActionContext, Module } from 'vuex';
-
-type ProductsContext = ActionContext<ProductsState, ProductsState>;
+import { Module } from 'vuex';
 
 export type ProductsState = {
   products: Product[];
