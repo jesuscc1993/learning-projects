@@ -77,8 +77,7 @@ export default Vue.extend<Data, Methods, {}>({
         <td class="text-xs-left date">{{ formatDatetime(props.item.isoDate) }}</td>
         <td
           class="text-xs-left products"
-          :title="props.item.rows.map(row => row.product.name).join(', ')"
-        >{{ props.item.rows.length || '-' }}</td>
+        >({{ props.item.rows.length }}) {{ props.item.rows.map(row => row.product.name).join(', ') }}.</td>
         <td class="text-xs-right actions">
           <v-btn flat icon class="ma-0" @click.stop="showListLoadingPrompt(props.item)">
             <v-icon>folder_open</v-icon>
@@ -92,6 +91,10 @@ export default Vue.extend<Data, Methods, {}>({
 <!-- style -->
 <style lang="scss" scoped>
 td {
+  &.products {
+    width: 100%;
+  }
+  &.date,
   &.actions {
     white-space: nowrap;
   }
