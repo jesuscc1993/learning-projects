@@ -29,7 +29,7 @@ export default Vue.extend<Data, Methods, {}>({
     return {
       headers: [
         { text: <string>this.$t('list.date'), value: 'isoDate', align: 'left' },
-        { text: <string>this.$t('list.products'), value: 'rows', align: 'left' },
+        { text: <string>this.$t('list.products'), value: 'rows', align: 'left', sortable: false },
         { text: '', value: '', align: 'right', sortable: false },
       ],
       pagination: {
@@ -74,7 +74,7 @@ export default Vue.extend<Data, Methods, {}>({
       class="elevation-1"
     >
       <template v-slot:items="props">
-        <td class="text-xs-left date">{{ formatDatetime(props.item.isoDate) }}</td>
+        <td class="text-xs-center date">{{ formatDatetime(props.item.isoDate) }}</td>
         <td
           class="text-xs-left products"
         >({{ props.item.rows.length }}) {{ props.item.rows.map(row => row.product.name).join(', ') }}.</td>
@@ -91,10 +91,9 @@ export default Vue.extend<Data, Methods, {}>({
 <!-- style -->
 <style lang="scss" scoped>
 td {
-  &.products {
-    width: 100%;
+  &.date {
+    width: 96px;
   }
-  &.date,
   &.actions {
     white-space: nowrap;
   }
