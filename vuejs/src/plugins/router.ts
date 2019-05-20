@@ -14,8 +14,8 @@ export const sections = [
     component: RowsView,
   },
   {
-    path: '/catalog',
-    name: 'catalog',
+    path: '/products',
+    name: 'products',
     icon: 'developer_board',
     component: ProductsView,
   },

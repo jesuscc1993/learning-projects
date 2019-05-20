@@ -3,7 +3,7 @@
 import Vue from 'vue';
 import { RouteConfig } from 'vue-router';
 
-import { sections } from '../plugins/router';
+import { sections } from '../../plugins/router';
 
 type Props = {
   value: boolean;

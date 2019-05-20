@@ -19,9 +19,6 @@ export const listsStore: Module<ListsState, ListsState> = {
     addList(state: ListsState, list: List) {
       state.lists = [...state.lists, list];
     },
-    deleteList(state: ListsState, listId: string) {
-      state.lists = state.lists.filter(list => list.id !== listId);
-    },
   },
   actions: {
     setLists({ commit }, lists: List[]) {
@@ -29,9 +26,6 @@ export const listsStore: Module<ListsState, ListsState> = {
     },
     addList({ commit }, list: List) {
       commit('addList', list);
-    },
-    deleteList({ commit }, listId: number) {
-      commit('deleteList', listId);
     },
   },
   getters: {

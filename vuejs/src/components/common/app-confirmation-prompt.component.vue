@@ -2,7 +2,7 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import { formRules } from '../domain/forms';
+import { formRules } from '../../domain/forms';
 
 type Props = {
   value: boolean;

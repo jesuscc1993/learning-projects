@@ -2,20 +2,20 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import { formRules } from '../domain/forms';
-import { Product } from '../domain/product.types';
-import { Row } from '../domain/row.types';
-import store from '../stores/central.store';
+import { formRules } from '../../domain/forms';
+import { Product } from '../../domain/product.types';
+import { Row } from '../../domain/row.types';
+import store from '../../stores/central.store';
 
 const emptyFormData = {};
 
 type Props = {
-  initialValue: Row;
+  initialValue: Product;
   value: boolean;
   products: Product[];
 };
 type Data = {
-  formData: Partial<Row>;
+  formData: Partial<Product>;
   isFormValid: boolean;
   formRules: typeof formRules;
 };
@@ -24,7 +24,7 @@ type Computed = {
 };
 type Methods = {
   save: () => void;
-  dismiss: (payload?: Row) => void;
+  dismiss: (payload?: Product) => void;
 };
 
 export default Vue.extend<Data, Methods, Computed, Props>({
@@ -57,10 +57,10 @@ export default Vue.extend<Data, Methods, Computed, Props>({
   },
   methods: {
     save() {
-      this.dismiss(<Row>this.formData);
+      this.dismiss(<Product>this.formData);
       this.formData = { ...emptyFormData };
     },
-    dismiss(payload?: Row) {
+    dismiss(payload?: Product) {
       this.$emit('dismiss', payload);
       this.isOpen = false;
     },
@@ -73,27 +73,15 @@ export default Vue.extend<Data, Methods, Computed, Props>({
 <template>
   <v-dialog v-model="isOpen" persistent width="480">
     <v-card>
-      <v-card-title class="headline primary" primary-title>{{ $t('row') }}</v-card-title>
+      <v-card-title class="headline primary" primary-title>{{ $t('product') }}</v-card-title>
 
       <v-card-text v-if="isOpen">
         <v-form v-model="isFormValid">
-          <v-select
-            :label="`${$t('row.product')}*`"
-            :rules="[formRules.required]"
-            :items="products"
-            v-model="formData.product"
-          >
-            <template slot="selection" slot-scope="data">{{ data.item.name }}</template>
-            <template slot="item" slot-scope="data">{{ data.item.name }}</template>
-          </v-select>
-
           <v-text-field
-            :label="$t('row.quantity')"
-            :rules="[formRules.integer]"
-            v-model="formData.quantity"
+            :label="`${$t('product.name')}*`"
+            :rules="[formRules.required]"
+            v-model="formData.name"
           ></v-text-field>
-
-          <v-text-field :label="$t('row.note')" v-model="formData.note"></v-text-field>
         </v-form>
       </v-card-text>
 

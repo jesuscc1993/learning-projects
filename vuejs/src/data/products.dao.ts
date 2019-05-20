@@ -12,8 +12,8 @@ export class ProductsDao extends DocumentsDao {
   getProducts() {
     return this.getDocuments<Product>();
   }
-  addProduct(product: Product) {
-    return this.addDocument<Product>(product);
+  addProduct({ id, ...productData }: Product) {
+    return this.addDocument<Product>(productData);
   }
   updateProduct(product: Product) {
     return this.updateDocument<Product>(product);

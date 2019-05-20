@@ -1,4 +1,7 @@
-import { Row, RowDto } from '@/domain/row.types';
+import { CollectionDocument } from '@/domain/collection.types';
+import { Product } from '@/domain/product.types';
+import { Row } from '@/domain/row.types';
+import { firestore } from 'firebase';
 import { from } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 
@@ -6,6 +9,12 @@ import { DocumentsDao } from './documents.dao';
 import { productsCollectionPath } from './products.dao';
 
 export const rowsCollectionPath = 'rows';
+
+export type RowDto = CollectionDocument & {
+  productReference: firestore.DocumentReference;
+  quantity?: number;
+  checked?: boolean;
+};
 
 export class RowsDao extends DocumentsDao {
   constructor() {
@@ -18,7 +27,8 @@ export class RowsDao extends DocumentsDao {
         from(Promise.all(rows.map(row => row.productReference.get()))).pipe(
           map(products =>
             products.map(
-              (product, i) => <Row>{ ...rows[i], product: { ...product.data(), id: rows[i].productReference.id } }
+              (product, i) =>
+                <Row>{ ...rows[i], product: <Product>{ ...product.data(), id: rows[i].productReference.id } }
             )
           )
         )
@@ -26,7 +36,8 @@ export class RowsDao extends DocumentsDao {
     );
   }
   addRow(row: Row) {
-    return this.addDocument<RowDto>(this.rowToDto(row)).pipe(map(rowDto => <Row>{ ...rowDto, product: row.product }));
+    const { id, ...rowDto } = this.rowToDto(row);
+    return this.addDocument<RowDto>(rowDto).pipe(map(rowDto => <Row>{ ...rowDto, product: row.product }));
   }
   updateRow(row: Row) {
     return this.updateDocument<RowDto>(this.rowToDto(row)).pipe(
@@ -45,7 +56,7 @@ export class RowsDao extends DocumentsDao {
       ...row,
       productReference: this.getDocumentReference({
         collectionPath: productsCollectionPath,
-        documentId: product.id,
+        documentId: product.id || '',
       }),
     };
   }

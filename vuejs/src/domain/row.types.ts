@@ -1,14 +1,8 @@
-import { firestore } from 'firebase';
+import { CollectionDocument } from './collection.types';
+import { Product } from './product.types';
 
-export type RowDto = {
-  id?: string;
-  productReference: firestore.DocumentReference;
-  quantity?: number;
-  checked?: boolean;
-};
-export type Row = {
-  id?: string;
-  product: firestore.DocumentData;
+export type Row = CollectionDocument & {
+  product: Product;
   quantity?: number;
   checked?: boolean;
 };

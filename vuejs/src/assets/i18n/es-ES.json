@@ -12,7 +12,7 @@
   "row.product": "Product",
   "row.quantity": "Cant.",
   "sections": "Secciones",
-  "sections.catalog": "Catálogo",
   "sections.home": "Inicio",
-  "sections.list": "Lista"
+  "sections.list": "Lista",
+  "sections.products": "Productos"
 }
