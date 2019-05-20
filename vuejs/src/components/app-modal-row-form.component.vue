@@ -57,7 +57,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
   },
   methods: {
     save() {
-      this.dismiss(this.formData);
+      this.dismiss(<Row>this.formData);
       this.formData = { ...emptyFormData };
     },
     dismiss(payload?: Row) {

@@ -10,12 +10,12 @@ import store from '../stores/central.store';
 const emptyFormData = {};
 
 type Props = {
-  initialValue: Row;
+  initialValue: Product;
   value: boolean;
   products: Product[];
 };
 type Data = {
-  formData: Partial<Row>;
+  formData: Partial<Product>;
   isFormValid: boolean;
   formRules: typeof formRules;
 };
@@ -24,7 +24,7 @@ type Computed = {
 };
 type Methods = {
   save: () => void;
-  dismiss: (payload?: Row) => void;
+  dismiss: (payload?: Product) => void;
 };
 
 export default Vue.extend<Data, Methods, Computed, Props>({
@@ -57,10 +57,10 @@ export default Vue.extend<Data, Methods, Computed, Props>({
   },
   methods: {
     save() {
-      this.dismiss(this.formData);
+      this.dismiss(<Product>this.formData);
       this.formData = { ...emptyFormData };
     },
-    dismiss(payload?: Row) {
+    dismiss(payload?: Product) {
       this.$emit('dismiss', payload);
       this.isOpen = false;
     },
