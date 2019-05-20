@@ -13,7 +13,7 @@ export default {
 <!-- template -->
 <template>
   <div>
-    <app-rows-table/>
+    <app-lists-table/>
   </div>
 </template>
 

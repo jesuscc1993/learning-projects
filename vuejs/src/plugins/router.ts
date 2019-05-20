@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router, { RouteConfig } from 'vue-router';
 
+import ListsView from './../views/lists.view.vue';
 import ProductsView from './../views/products.view.vue';
 import RowsView from './../views/rows.view.vue';
 
@@ -18,6 +19,12 @@ export const sections = [
     name: 'products',
     icon: 'developer_board',
     component: ProductsView,
+  },
+  {
+    path: '/history',
+    name: 'history',
+    icon: 'archive',
+    component: ListsView,
   },
   { path: '*', redirect: '/list' },
 ];

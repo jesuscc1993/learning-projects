@@ -2,7 +2,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { pipe } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, flatMap } from 'rxjs/operators';
 
 import AppConfirmationPrompt from '../../components/common/app-confirmation-prompt.component.vue';
 import AppModalRowForm from '../../components/rows/app-modal-row-form.component.vue';
@@ -91,8 +91,10 @@ export default Vue.extend<Data, Methods, Computed>({
       rowsService.deleteRow(rowId).subscribe();
     },
     clearRows() {
-      listsService.addList({ rows: this.$store.getters.rows });
-      rowsService.deleteAllRows().subscribe();
+      listsService
+        .addList({ rows: this.$store.getters.rows })
+        .pipe(flatMap(() => rowsService.deleteAllRows()))
+        .subscribe();
     },
   },
   computed: {

@@ -14,6 +14,9 @@ class RowsService {
   getRows() {
     return this.rowsDao.getRows().pipe(tap(rows => store.dispatch('setRows', rows)));
   }
+  setRows(rows: Row[]) {
+    return this.rowsDao.setRows(rows).pipe(tap(rows => store.dispatch('setRows', rows)));
+  }
   addRow(rowData: Row) {
     return this.rowsDao.addRow(rowData).pipe(tap(row => store.dispatch('addRow', row)));
   }

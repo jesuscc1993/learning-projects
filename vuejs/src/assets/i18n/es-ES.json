@@ -5,6 +5,10 @@
   "generic.save": "Guardar",
   "list.clear": "Vaciar Lista",
   "list.clear.confirmation": "¿Seguro que quieres borrar la lista permanentemente?",
+  "list.date": "Fecha",
+  "list.load": "Cargar Lista",
+  "list.load.confirmation": "¿Seguro que quieres sobreescribir la lista actual?",
+  "list.products": "Productos",
   "product": "Producto",
   "product.name": "Nombre del Producto",
   "row": "Fila de Lista",
@@ -13,6 +17,7 @@
   "row.quantity": "Cant.",
   "sections": "Secciones",
   "sections.home": "Inicio",
+  "sections.history": "Historial",
   "sections.list": "Lista",
   "sections.products": "Productos"
 }

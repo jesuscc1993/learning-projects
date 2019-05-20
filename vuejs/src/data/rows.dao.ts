@@ -2,7 +2,7 @@ import { CollectionDocument } from '@/domain/collection.types';
 import { Product } from '@/domain/product.types';
 import { Row } from '@/domain/row.types';
 import { firestore } from 'firebase';
-import { from } from 'rxjs';
+import { forkJoin, from } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 
 import { DocumentsDao } from './documents.dao';
@@ -34,6 +34,9 @@ export class RowsDao extends DocumentsDao {
         )
       )
     );
+  }
+  setRows(rows: Row[]) {
+    return this.deleteAllRows().pipe(flatMap(() => forkJoin(rows.map(row => this.addRow(row)))));
   }
   addRow(row: Row) {
     const { id, ...rowDto } = this.rowToDto(row);

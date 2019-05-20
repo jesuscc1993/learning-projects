@@ -5,6 +5,10 @@
   "generic.save": "Save",
   "list.clear": "Clear List",
   "list.clear.confirmation": "Are you sure you want to permanently clear the list?",
+  "list.date": "Date",
+  "list.load": "Load List",
+  "list.load.confirmation": "Are you sure you want to override the current list?",
+  "list.products": "Products",
   "product": "Product",
   "product.name": "Product Name",
   "row": "List Row",
@@ -12,6 +16,7 @@
   "row.product": "Product",
   "row.quantity": "Qty",
   "sections": "Sections",
+  "sections.history": "History",
   "sections.home": "Home",
   "sections.list": "List",
   "sections.products": "Products"

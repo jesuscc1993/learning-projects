@@ -34,4 +34,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## TODO
 
-- (EXTRA) Archive completed lists on a new collection
+-
