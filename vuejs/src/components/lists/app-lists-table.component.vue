@@ -45,7 +45,9 @@ export default Vue.extend<Data, Methods, {}>({
       this.isPromptOpen = true;
     },
     loadList() {
-      rowsService.setRows(this.listBeingLoaded.rows).subscribe();
+      if (this.listBeingLoaded) {
+        rowsService.setRows(this.listBeingLoaded.rows).subscribe();
+      }
     },
     formatDatetime(date: Date | string) {
       return formatDatetime(date);
