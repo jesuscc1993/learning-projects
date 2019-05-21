@@ -16,8 +16,11 @@
   "row.product": "Product",
   "row.quantity": "Qty",
   "sections": "Sections",
+  "sections.auth": "Auth",
   "sections.history": "History",
   "sections.home": "Home",
   "sections.list": "List",
-  "sections.products": "Products"
+  "sections.products": "Products",
+  "sign.out": "Sign Out",
+  "sign.in": "Sign In"
 }

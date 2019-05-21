@@ -13,7 +13,7 @@ export default {
 <!-- template -->
 <template>
   <div>
-    <app-lists-table/>
+    <app-lists-table @listLoad="$router.push('list')"/>
   </div>
 </template>
 

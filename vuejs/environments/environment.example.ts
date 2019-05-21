@@ -8,4 +8,5 @@ export const environment = {
     messagingSenderId: 'string',
     appId: 'string',
   },
+  firebaseAuthProvider: 'Google',
 };

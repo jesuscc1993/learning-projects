@@ -11,6 +11,7 @@ import { Row } from '../../domain/row.types';
 import { listsService } from '../../services/lists.service';
 import { rowsService } from '../../services/rows.service';
 import store from '../../stores/central.store';
+import { User } from 'firebase';
 
 type Data = {
   headers: { text: string; value: string; align?: string; sortable?: boolean }[];
@@ -28,9 +29,11 @@ type Methods = {
   updateRow: (row: Row) => void;
   deleteRow: (rowId: string) => void;
   clearRows: () => void;
+  noop: () => void;
 };
 type Computed = {
-  eligibleProducts: () => void;
+  user?: User;
+  eligibleProducts: Product[];
 };
 
 export default Vue.extend<Data, Methods, Computed>({
@@ -96,8 +99,12 @@ export default Vue.extend<Data, Methods, Computed>({
         .pipe(flatMap(() => rowsService.deleteAllRows()))
         .subscribe();
     },
+    noop() {},
   },
   computed: {
+    user() {
+      return this.$store.getters.user;
+    },
     eligibleProducts() {
       return this.$store.getters.products.filter(
         (product: Product) =>
@@ -130,25 +137,36 @@ export default Vue.extend<Data, Methods, Computed>({
         <span v-if="props.header.value.length">{{ props.header.text }}</span>
 
         <span v-else>
-          <v-btn icon class="ma-0" @click="openEditionModal()">
+          <v-btn icon class="ma-0" :disabled="!user" @click="openEditionModal()">
             <v-icon>add</v-icon>
           </v-btn>
         </span>
       </template>
 
       <template v-slot:items="props">
-        <tr @click="toggleRowChecked(props.item)" class="clickable">
+        <tr @click="user ? toggleRowChecked(props.item) : noop()" class="clickable">
           <td class="text-xs-left check">
-            <v-checkbox :input-value="props.item.checked" hide-details @click="() => {}"></v-checkbox>
+            <v-checkbox
+              :input-value="props.item.checked"
+              :disabled="!user"
+              hide-details
+              @click="() => {}"
+            ></v-checkbox>
           </td>
           <td class="text-xs-left name">{{ props.item.product.name }}</td>
           <td class="text-xs-left note">{{ props.item.note || '-' }}</td>
           <td class="text-xs-left quantity">{{ props.item.quantity || '-' }}</td>
           <td class="text-xs-right actions">
-            <v-btn flat icon class="ma-0" @click.stop="openEditionModal(props.item)">
+            <v-btn
+              flat
+              icon
+              class="ma-0"
+              :disabled="!user"
+              @click.stop="openEditionModal(props.item)"
+            >
               <v-icon>edit</v-icon>
             </v-btn>
-            <v-btn flat icon class="ma-0" @click.stop="deleteRow(props.item.id)">
+            <v-btn flat icon class="ma-0" :disabled="!user" @click.stop="deleteRow(props.item.id)">
               <v-icon>delete</v-icon>
             </v-btn>
           </td>
@@ -167,8 +185,8 @@ export default Vue.extend<Data, Methods, Computed>({
 
       <v-btn
         class="primary my-2 mx-0"
+        :disabled="!(user && $store.getters.rows.length)"
         @click="showRowsClearingPrompt()"
-        :disabled="!$store.getters.rows.length"
       >
         {{$t('list.clear')}}
         <v-icon>delete</v-icon>

@@ -10,6 +10,7 @@ import { List } from '../../domain/list.types';
 import { listsService } from '../../services/lists.service';
 import store from '../../stores/central.store';
 import { rowsService } from '../../services/rows.service';
+import { User } from 'firebase';
 
 type Data = {
   headers: { text: string; value: string; align?: string; sortable?: boolean }[];
@@ -19,6 +20,9 @@ type Data = {
 };
 type Methods = {
   loadList: (list: List) => void;
+};
+type Computed = {
+  user?: User;
 };
 
 export default Vue.extend<Data, Methods, {}>({
@@ -47,10 +51,16 @@ export default Vue.extend<Data, Methods, {}>({
     loadList() {
       if (this.listBeingLoaded) {
         rowsService.setRows(this.listBeingLoaded.rows).subscribe();
+        this.$emit('listLoad', this.listBeingLoaded);
       }
     },
     formatDatetime(date: Date | string) {
       return formatDatetime(date);
+    },
+  },
+  computed: {
+    user() {
+      return this.$store.getters.user;
     },
   },
   store,
@@ -81,7 +91,13 @@ export default Vue.extend<Data, Methods, {}>({
           class="text-xs-left products"
         >({{ props.item.rows.length }}) {{ props.item.rows.map(row => row.product.name).join(', ') }}.</td>
         <td class="text-xs-right actions">
-          <v-btn flat icon class="ma-0" @click.stop="showListLoadingPrompt(props.item)">
+          <v-btn
+            flat
+            icon
+            class="ma-0"
+            :disabled="!user"
+            @click.stop="showListLoadingPrompt(props.item)"
+          >
             <v-icon>folder_open</v-icon>
           </v-btn>
         </td>

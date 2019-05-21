@@ -88,6 +88,8 @@ export default Vue.extend<Data, Methods, Computed, Props>({
           </v-select>
 
           <v-text-field
+            type="number"
+            min="0"
             :label="$t('row.quantity')"
             :rules="[formRules.integer]"
             v-model="formData.quantity"

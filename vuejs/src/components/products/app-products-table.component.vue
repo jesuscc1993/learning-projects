@@ -8,6 +8,7 @@ import AppModalProductForm from '../../components/products/app-modal-product-for
 import { Product } from '../../domain/product.types';
 import { productsService } from '../../services/products.service';
 import store from '../../stores/central.store';
+import { User } from 'firebase';
 
 type Data = {
   headers: { text: string; value: string; align: string; sortable: boolean }[];
@@ -20,8 +21,11 @@ type Methods = {
   saveProduct: (product: Partial<Product>) => void;
   deleteProduct: (productId: string) => void;
 };
+type Computed = {
+  user?: User;
+};
 
-export default Vue.extend<Data, Methods, undefined>({
+export default Vue.extend<Data, Methods, Computed>({
   components: {
     AppModalProductForm,
   },
@@ -55,6 +59,11 @@ export default Vue.extend<Data, Methods, undefined>({
       productsService.deleteProduct(productId).subscribe();
     },
   },
+  computed: {
+    user() {
+      return this.$store.getters.user;
+    },
+  },
   store,
 });
 </script>
@@ -78,7 +87,7 @@ export default Vue.extend<Data, Methods, undefined>({
         <span v-if="props.header.text">{{ props.header.text }}</span>
 
         <span v-else>
-          <v-btn icon class="ma-0" @click="openEditionModal()">
+          <v-btn icon class="ma-0" :disabled="!user" @click="openEditionModal()">
             <v-icon>add</v-icon>
           </v-btn>
         </span>
@@ -87,10 +96,22 @@ export default Vue.extend<Data, Methods, undefined>({
       <template v-slot:items="props">
         <td class="text-xs-left">{{ props.item.name }}</td>
         <td class="text-xs-right">
-          <v-btn flat icon class="ma-0" @click.stop="openEditionModal(props.item)">
+          <v-btn
+            flat
+            icon
+            class="ma-0"
+            :disabled="!user"
+            @click.stop="openEditionModal(props.item)"
+          >
             <v-icon>edit</v-icon>
           </v-btn>
-          <v-btn flat icon class="ma-0" @click.stop="deleteProduct(props.item.id)">
+          <v-btn
+            flat
+            icon
+            class="ma-0"
+            :disabled="!user"
+            @click.stop="deleteProduct(props.item.id)"
+          >
             <v-icon>delete</v-icon>
           </v-btn>
         </td>
