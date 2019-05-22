@@ -2,12 +2,14 @@
 <script lang="ts">
 import AppFooter from './components/common/app-footer.component.vue';
 import AppHeader from './components/common/app-header.component.vue';
+import AppSnackbar from './components/common/app-snackbar.component.vue';
 
 export default {
   name: 'App',
   components: {
     AppFooter,
     AppHeader,
+    AppSnackbar,
   },
 };
 </script>
@@ -21,6 +23,7 @@ export default {
         <router-view/>
       </div>
       <app-footer/>
+      <app-snackbar/>
     </v-app>
   </div>
 </template>
