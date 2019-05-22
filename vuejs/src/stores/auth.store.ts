@@ -1,5 +1,6 @@
-import { User } from '@/domain/auth.types';
 import { Module } from 'vuex';
+
+import { User } from '../domain/auth.types';
 
 export type AuthState = {
   user?: User;

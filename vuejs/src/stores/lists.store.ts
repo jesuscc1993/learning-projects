@@ -1,5 +1,6 @@
-import { List } from '@/domain/list.types';
 import { Module } from 'vuex';
+
+import { List } from '../domain/list.types';
 
 export type ListsState = {
   lists: List[];

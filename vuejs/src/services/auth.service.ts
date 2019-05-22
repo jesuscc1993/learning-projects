@@ -1,11 +1,11 @@
 import 'firebase/firestore';
 
-import { showSnackbarAndReturnError } from '@/domain/common';
-import store from '@/stores/central.store';
 import firebase from 'firebase/app';
 import { from } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
+import { showSnackbarAndReturnError } from '../domain/common';
+import store from '../stores/central.store';
 import { firebaseService } from './firebase.service';
 
 class AuthService {

@@ -1,8 +1,9 @@
-import { ProductsDao } from '@/data/products.dao';
-import { showSnackbarAndReturnError } from '@/domain/common';
-import { Product } from '@/domain/product.types';
-import store from '@/stores/central.store';
 import { catchError, tap } from 'rxjs/operators';
+
+import { ProductsDao } from '../data/products.dao';
+import { showSnackbarAndReturnError } from '../domain/common';
+import { Product } from '../domain/product.types';
+import store from '../stores/central.store';
 
 class ProductsService {
   readonly productsDao: ProductsDao;

@@ -1,8 +1,9 @@
-import { RowsDao } from '@/data/rows.dao';
-import { showSnackbarAndReturnError } from '@/domain/common';
-import { Row } from '@/domain/row.types';
-import store from '@/stores/central.store';
 import { catchError, tap } from 'rxjs/operators';
+
+import { RowsDao } from '../data/rows.dao';
+import { showSnackbarAndReturnError } from '../domain/common';
+import { Row } from '../domain/row.types';
+import store from '../stores/central.store';
 
 class RowsService {
   readonly rowsDao: RowsDao;

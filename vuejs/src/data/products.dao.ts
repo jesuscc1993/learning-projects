@@ -1,5 +1,4 @@
-import { Product } from '@/domain/product.types';
-
+import { Product } from '../domain/product.types';
 import { DocumentsDao } from './documents.dao';
 
 export const productsCollectionPath = 'products';

@@ -1,5 +1,6 @@
-import { Product } from '@/domain/product.types';
 import { Module } from 'vuex';
+
+import { Product } from '../domain/product.types';
 
 export type ProductsState = {
   products: Product[];

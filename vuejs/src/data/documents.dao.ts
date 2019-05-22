@@ -1,7 +1,8 @@
-import { firebaseService } from '@/services/firebase.service';
 import { firestore } from 'firebase';
 import { from } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
+
+import { firebaseService } from '../services/firebase.service';
 
 export class DocumentsDao {
   readonly collection: firestore.CollectionReference;

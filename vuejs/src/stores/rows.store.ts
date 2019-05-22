@@ -1,5 +1,6 @@
-import { Row } from '@/domain/row.types';
 import { Module } from 'vuex';
+
+import { Row } from '../domain/row.types';
 
 export type RowsState = {
   rows: Row[];

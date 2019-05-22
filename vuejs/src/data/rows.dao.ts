@@ -1,10 +1,10 @@
-import { CollectionDocument } from '@/domain/collection.types';
-import { Product } from '@/domain/product.types';
-import { Row } from '@/domain/row.types';
 import { firestore } from 'firebase';
 import { forkJoin, from } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 
+import { CollectionDocument } from '../domain/collection.types';
+import { Product } from '../domain/product.types';
+import { Row } from '../domain/row.types';
 import { DocumentsDao } from './documents.dao';
 import { productsCollectionPath } from './products.dao';
 

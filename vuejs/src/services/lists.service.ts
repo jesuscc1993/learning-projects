@@ -1,8 +1,9 @@
-import { ListsDao } from '@/data/lists.dao';
-import { showSnackbarAndReturnError } from '@/domain/common';
-import { List } from '@/domain/list.types';
-import store from '@/stores/central.store';
 import { catchError, tap } from 'rxjs/operators';
+
+import { ListsDao } from '../data/lists.dao';
+import { showSnackbarAndReturnError } from '../domain/common';
+import { List } from '../domain/list.types';
+import store from '../stores/central.store';
 
 class ListsService {
   readonly listsDao: ListsDao;
