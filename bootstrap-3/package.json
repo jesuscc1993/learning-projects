@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/jesuscc1993/bootstrap-3-demo#readme",
   "dependencies": {
-    "angular": "^1.7.9",
+    "angular": "^1.8.0",
     "animate.css": "^3.5.2",
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
